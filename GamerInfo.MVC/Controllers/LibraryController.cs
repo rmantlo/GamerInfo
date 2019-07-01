@@ -17,7 +17,7 @@ namespace GamerInfo.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create()
         {
-
+            return View();
         }
     }
 }

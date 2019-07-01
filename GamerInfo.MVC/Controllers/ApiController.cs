@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GamerInfo.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,12 @@ namespace GamerInfo.MVC.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+
+        public ApiService CreateApiService()
+        {
+            var service = new ApiService();
         }
     }
 }
