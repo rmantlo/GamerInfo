@@ -5,8 +5,25 @@
 }
 
 <div>
-    <h4>Game</h4>
     <hr />
+    @if (TempData.ContainsKey("SaveResult"))
+    {
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+            @TempData["SaveResult"]
+        </div>
+    }
+    @if (TempData.ContainsKey("FailResult"))
+    {
+        <div class="alert alert-danger fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+            @TempData["FailResult"]
+        </div>
+    }
     <section>
         <image src="@Html.DisplayFor(model => model.CoverID)" />
         <h2>

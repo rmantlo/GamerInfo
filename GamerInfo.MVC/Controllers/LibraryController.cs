@@ -57,11 +57,11 @@ namespace GamerInfo.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Game game)
         {
-            if (!ModelState.IsValid) return View(game);
+            if (!ModelState.IsValid) return RedirectToAction($"Details/{game.GameID}");
             if (game.GameID != id)
             {
                 ModelState.AddModelError("", "ID mismatch");
-                return View(game);
+                return RedirectToAction($"Details/{game.GameID}");
             }
             var gservice = CreateGameService();
             if (gservice.UpdateGame(game))
@@ -69,7 +69,8 @@ namespace GamerInfo.MVC.Controllers
                 TempData["SaveResult"] = "Game Information updated.";
                 return RedirectToAction($"Details/{game.GameID}");
             }
-            return View(game);
+            TempData["FailResult"] = "No changes made.";
+            return RedirectToAction($"Details/{game.GameID}");
         }
 
         public ActionResult Delete(int id)

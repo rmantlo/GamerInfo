@@ -63,6 +63,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveCreate.cs" />
+    <Compile Include="SaveDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

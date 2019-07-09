@@ -12,9 +12,11 @@ namespace GamerInfo.MVC.Controllers
     public class SaveController : Controller
     {
         // GET: Save
-        public ActionResult Index()
+        public ActionResult Index(int gameId)
         {
-            return View();
+            var sservice = CreateSaveService();
+            var gameSaves = sservice.GetSaveInfoByGame(gameId);
+            return View(gameSaves);
         }
         public ActionResult Create()
         {
