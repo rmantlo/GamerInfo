@@ -19,6 +19,7 @@ namespace GamerInfo.MVC.Controllers
         public ApiService CreateApiService()
         {
             var service = new ApiService();
+            return service;
         }
     }
 }

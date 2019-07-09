@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel;
+using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Security.Claims;
@@ -19,7 +20,9 @@ namespace GamerInfo.Data
     public class ApplicationUser : IdentityUser
     {
         //add properties here to add then to the user database table
+        [DefaultValue(false)]
         public bool IsFamilyFriendly { get; set; }
+        [DefaultValue("Default")]
         public TypeOfTheme ThemeType { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

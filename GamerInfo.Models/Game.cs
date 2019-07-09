@@ -8,7 +8,7 @@ namespace GamerInfo.Models
 {
     public class Game
     {
-        public int GameID { get; set; }
+        public int? GameID { get; set; }
         public string Name { get; set; }
         public string Summary { get; set; }
         public string CoverID { get; set; }

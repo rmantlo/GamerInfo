@@ -1,0 +1,30 @@
+﻿@model GamerInfo.Models.Game
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Game</h4>
+    <hr />
+    <section>
+        <image src="@Html.DisplayFor(model => model.CoverID)" />
+        <h2>
+            @Html.DisplayFor(model => model.Name)
+        </h2>
+        <p>
+            @Html.DisplayFor(model => model.Genre) --
+            @Html.DisplayFor(model => model.AgeRating) --
+            @Html.DisplayFor(model => model.ReleaseDate)
+        </p>
+        <h5>
+            @Html.DisplayFor(model => model.Summary)
+        </h5>
+    </section>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.GameID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

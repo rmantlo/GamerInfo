@@ -21,7 +21,7 @@ namespace GamerInfo.Services
                 SaveInformation = saveCreate.SaveInformation,
                 Hours = saveCreate.Hours,
                 OwnerID = _userId,
-
+                GameID = saveCreate.GameID
             };
             using (var ctx = new ApplicationDbContext())
             {

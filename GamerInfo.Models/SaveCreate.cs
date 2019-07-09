@@ -11,5 +11,6 @@ namespace GamerInfo.Models
         public string SaveTitle { get; set; }
         public string SaveInformation { get; set; }
         public decimal Hours { get; set; }
+        public int GameID { get; set; }
     }
 }

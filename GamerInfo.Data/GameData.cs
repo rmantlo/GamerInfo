@@ -11,10 +11,23 @@ namespace GamerInfo.Data
     public class GameData
     {
         [Key]
-        public int GameID { get; set; }
+        public int ID { get; set; }
         [Required]
         public Guid OwnerID { get; set; }
-        public Game GameList { get; set; }
+        public int? GameID { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Summary { get; set; }
+        [Required]
+        public string CoverID { get; set; }
+        [Required]
+        public string AgeRating { get; set; }
+        [Required]
+        public DateTime ReleaseDate { get; set; }
+        [Required]
+        public string Genre { get; set; }
+        [Required]
         public string UserComments { get; set; }
     }
 }

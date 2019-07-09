@@ -10,14 +10,22 @@ namespace GamerInfo.Services
 {
     public class ApiService
     {
-        public bool CallAllGames()
+        private string URL = "https://api-v3.igdb.com/";
+        HttpClient call;
+        public ApiService()
         {
-            List<Game> ApiGames = null;
-            using (var call = new HttpClient())
-            {
-                call.BaseAddress = new Uri("http//:api-v3.igdb.com/");
-            }
-            return false;
+            var call = new HttpClient();
+
+            call.BaseAddress = new Uri(URL);
+            call.DefaultRequestHeaders.Accept.Clear();
+            //call.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var IsHeader = call.DefaultRequestHeaders.TryAddWithoutValidation("user-key", "4e0ed404bf691e52cb4cedf37ee1551d");
+        }
+
+        public async void GetApiGames()
+        {
+            HttpResponseMessage responseMessage = await call.GetAsync(URL);
+            List<Game> games = new List<Game>();
         }
     }
 }
