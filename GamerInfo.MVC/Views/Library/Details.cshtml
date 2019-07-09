@@ -4,8 +4,6 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <div>
     <h4>Game</h4>
     <hr />
@@ -25,6 +23,34 @@
     </section>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.GameID }) |
+    <a data-target="#myEditModal" data-toggle="modal">Edit Game</a> |
+    <a data-target="#myDeleteModal" data-toggle="modal">Remove Game</a> |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<div class="modal" id="myEditModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("_Edit")
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="myDeleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("_Delete")
+            </div>
+        </div>
+    </div>
+</div>

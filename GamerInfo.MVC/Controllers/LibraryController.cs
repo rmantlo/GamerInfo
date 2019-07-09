@@ -18,13 +18,17 @@ namespace GamerInfo.MVC.Controllers
             var gameList = gservice.GetGameList();
             return View(gameList);
         }
-        public ActionResult Details()
+        public ActionResult Details(int id)
         {
-            return View();
+            var gservice = CreateGameService();
+            var gameDetails = gservice.GetGameDetails(id);
+
+            return View(gameDetails);
         }
+
+
         public ActionResult Create()
         {
-            
             return View();
         }
         [HttpPost]
@@ -41,6 +45,53 @@ namespace GamerInfo.MVC.Controllers
             }
             return View();
         }
+
+
+        public ActionResult Edit(int id)
+        {
+            var gservice = CreateGameService();
+            var model = gservice.GetGameDetails(id);
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Game game)
+        {
+            if (!ModelState.IsValid) return View(game);
+            if (game.GameID != id)
+            {
+                ModelState.AddModelError("", "ID mismatch");
+                return View(game);
+            }
+            var gservice = CreateGameService();
+            if (gservice.UpdateGame(game))
+            {
+                TempData["SaveResult"] = "Game Information updated.";
+                return RedirectToAction($"Details/{game.GameID}");
+            }
+            return View(game);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var gservice = CreateGameService();
+            var model = gservice.GetGameDetails(id);
+            return View(model);
+        }
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var gservice = CreateGameService();
+            if (gservice.RemoveGame(id))
+            {
+                TempData["SaveResult"] = "Game removed from Library.";
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
 
         public LibraryService CreateGameService()
         {

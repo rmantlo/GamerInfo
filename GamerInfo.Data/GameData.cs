@@ -27,7 +27,7 @@ namespace GamerInfo.Data
         public DateTime ReleaseDate { get; set; }
         [Required]
         public string Genre { get; set; }
-        [Required]
+        
         public string UserComments { get; set; }
     }
 }

@@ -1,0 +1,16 @@
+﻿@model GamerInfo.Models.Game
+
+<div>
+    <h3>
+        Are you sure you want to remove @Html.DisplayFor(model => model.Name) from your library?
+    </h3>
+
+    @using (Html.BeginForm("Delete", "Library", new { id = Model.GameID } , FormMethod.Post)) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
