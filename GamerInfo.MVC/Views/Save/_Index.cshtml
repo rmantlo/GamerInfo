@@ -1,0 +1,43 @@
+﻿@model GamerInfo.Models.Game
+
+@*@ViewData["GameID"];*@
+<table class="table">
+    <tr>
+        <th>
+            Current
+        </th>
+        <th>
+            Save Title
+        </th>
+        <th>
+            Save Information
+        </th>
+        <th>
+            Hours
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.SaveDisplay)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCurrent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SaveTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SaveInformation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hours)
+            </td>
+            <td>
+                @Html.Partial("~/Views/Save/_Edit.cshtml", item) |
+                @Html.Partial("~/Views/Save/_Delete.cshtml", item)
+            </td>
+        </tr>
+    }
+</table>
+@Html.Partial("~/Views/Save/_Create.cshtml", new GamerInfo.Models.SaveCreate(), new ViewDataDictionary { { "GameID", ViewData["GameID"] } })

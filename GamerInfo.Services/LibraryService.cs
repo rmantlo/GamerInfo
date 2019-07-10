@@ -29,7 +29,8 @@ namespace GamerInfo.Services
                     CoverID = e.CoverID,
                     AgeRating = e.AgeRating,
                     ReleaseDate = e.ReleaseDate,
-                    Genre = e.Genre
+                    Genre = e.Genre,
+                    UserComments = e.UserComments,
                 });
                 return query.ToArray();
             }
@@ -45,7 +46,8 @@ namespace GamerInfo.Services
                 CoverID = game.CoverID,
                 AgeRating = game.AgeRating,
                 ReleaseDate = game.ReleaseDate,
-                Genre = game.Genre
+                Genre = game.Genre,
+                UserComments = game.UserComments
             };
             using (var ctx = new ApplicationDbContext())
             {
@@ -69,7 +71,8 @@ namespace GamerInfo.Services
                     CoverID = entity.CoverID,
                     AgeRating = entity.AgeRating,
                     ReleaseDate = entity.ReleaseDate,
-                    Genre = entity.Genre
+                    Genre = entity.Genre,
+                    UserComments = entity.UserComments
                 };
             }
         }
@@ -85,6 +88,7 @@ namespace GamerInfo.Services
                 editEntity.ReleaseDate = newGame.ReleaseDate;
                 editEntity.Genre = newGame.Genre;
                 editEntity.Summary = newGame.Summary;
+                editEntity.UserComments = newGame.UserComments;
 
                 return ctx.SaveChanges() == 1;
             }

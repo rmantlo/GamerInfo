@@ -20,5 +20,31 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 300px;
+}
+
+/*MY CODE*/
+/*GAME LIBRARY*/
+#libraryLoopImages{
+    display: inline-block;
+    width: 264px;
+    height:auto;
+}
+
+/*DETAILS PAGE*/
+.detailsData{
+    border: 1px solid black;
+    display:flex;
+    flex-direction:row;
+    justify-content: space-around;
+}
+#detailsImage{
+    width: 264px;
+}
+.saveData{
+    border: 1px solid black;
+}
+/*DETAILS EDIT*/
+.control-label{
+    text-align: left !important;
 }

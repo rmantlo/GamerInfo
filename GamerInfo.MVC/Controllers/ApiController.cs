@@ -12,6 +12,8 @@ namespace GamerInfo.MVC.Controllers
         // GET: Api
         public ActionResult Index()
         {
+            var aservice = CreateApiService();
+            aservice.GetApiGames();
             return View();
         }
 

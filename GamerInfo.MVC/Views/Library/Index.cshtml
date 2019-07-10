@@ -23,8 +23,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-
-            <button class="close" data-dismiss="modal">&times;</button>
+                <button class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 @Html.Partial("_Create", new GamerInfo.Models.Game())
@@ -37,7 +36,7 @@
     @foreach (var item in Model)
     {
         <section class="col-md-4">
-            <a href="@Url.Action("Details", "Library", new { id = item.GameID})"><image src="@Html.DisplayFor(modelItem => item.CoverID)" /></a>
+            <a href="@Url.Action("Details", "Library", new { id = item.GameID})"><image id="libraryLoopImages" src="@Html.DisplayFor(modelItem => item.CoverID)" /></a>
             <h3>
                 @Html.DisplayFor(modelItem => item.Name)
             </h3>

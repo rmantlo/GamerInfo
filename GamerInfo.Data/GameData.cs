@@ -14,7 +14,7 @@ namespace GamerInfo.Data
         public int ID { get; set; }
         [Required]
         public Guid OwnerID { get; set; }
-        public int? GameID { get; set; }
+        public int GameID { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

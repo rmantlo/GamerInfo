@@ -24,50 +24,66 @@
             @TempData["FailResult"]
         </div>
     }
-    <section>
-        <image src="@Html.DisplayFor(model => model.CoverID)" />
-        <h2>
-            @Html.DisplayFor(model => model.Name)
-        </h2>
-        <p>
-            @Html.DisplayFor(model => model.Genre) --
-            @Html.DisplayFor(model => model.AgeRating) --
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </p>
-        <h5>
-            @Html.DisplayFor(model => model.Summary)
-        </h5>
+    
+
+    <p>
+        <a data-target="#myEditModal" data-toggle="modal">Edit Game</a> |
+        <a data-target="#myDeleteModal" data-toggle="modal">Remove Game</a> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+    <div class="modal" id="myEditModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("_Edit")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="myDeleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("_Delete")
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <section class="detailsData">
+        <image id="detailsImage" src="@Html.DisplayFor(model => model.CoverID)" />
+        <div>
+            <h2>
+                @Html.DisplayFor(model => model.Name)
+            </h2>
+            <p>
+                @Html.DisplayFor(model => model.Genre) --
+                @Html.DisplayFor(model => model.AgeRating) --
+                @Html.DisplayFor(model => model.ReleaseDate)
+            </p>
+            <h5>
+                @Html.DisplayFor(model => model.Summary)
+            </h5>
+        </div>
     </section>
-</div>
-<p>
-    <a data-target="#myEditModal" data-toggle="modal">Edit Game</a> |
-    <a data-target="#myDeleteModal" data-toggle="modal">Remove Game</a> |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-
-<div class="modal" id="myEditModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <button class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                @Html.Partial("_Edit")
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal" id="myDeleteModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <button class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                @Html.Partial("_Delete")
-            </div>
-        </div>
-    </div>
+    <section>
+        <h4>Personal Comments on @Html.DisplayFor(model => model.Name): </h4>
+        @Html.DisplayFor(model => model.UserComments)
+    </section>
+    <section class="saveData">
+        @{ 
+            var saveDisplayModel = Model;
+        }
+        @Html.Partial("~/Views/Save/_Index.cshtml", Model, new ViewDataDictionary { { "GameID", Model.GameID } })
+    </section>
 </div>

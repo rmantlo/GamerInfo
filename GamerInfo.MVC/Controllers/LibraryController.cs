@@ -21,8 +21,10 @@ namespace GamerInfo.MVC.Controllers
         public ActionResult Details(int id)
         {
             var gservice = CreateGameService();
+            var sservice = CreateSaveService();
             var gameDetails = gservice.GetGameDetails(id);
-
+            var saveOneGameIndex = sservice.GetSaveInfoByGame(gameDetails.GameID);
+            gameDetails.SaveDisplay = saveOneGameIndex;
             return View(gameDetails);
         }
 
@@ -85,8 +87,10 @@ namespace GamerInfo.MVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var gservice = CreateGameService();
+            var sservice = CreateSaveService();
             if (gservice.RemoveGame(id))
             {
+                sservice.RemoveAllSavesByGameId(id);
                 TempData["SaveResult"] = "Game removed from Library.";
                 return RedirectToAction("Index");
             }
@@ -98,6 +102,12 @@ namespace GamerInfo.MVC.Controllers
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new LibraryService(userId);
+            return service;
+        }
+        public SaveService CreateSaveService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new SaveService(userId);
             return service;
         }
     }

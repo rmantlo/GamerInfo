@@ -240,12 +240,15 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Save\Index.cshtml" />
     <Content Include="Views\Library\Index.cshtml" />
     <Content Include="Views\Library\Details.cshtml" />
     <Content Include="Views\Library\_Create.cshtml" />
     <Content Include="Views\Library\_Edit.cshtml" />
     <Content Include="Views\Library\_Delete.cshtml" />
+    <Content Include="Views\Save\_Index.cshtml" />
+    <Content Include="Views\Save\_Create.cshtml" />
+    <Content Include="Views\Save\_Edit.cshtml" />
+    <Content Include="Views\Save\_Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,7 @@ namespace GamerInfo.Models
 {
     public class SaveDisplay
     {
+        public int SaveID { get; set; }
         public string SaveTitle { get; set; }
         public string SaveInformation { get; set; }
         public decimal? Hours { get; set; }
