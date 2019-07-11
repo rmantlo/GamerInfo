@@ -35,7 +35,7 @@
 <div class="container">
     @foreach (var item in Model)
     {
-        <section class="col-md-4">
+        <section class="col-md-4" id="designPls">
             <a href="@Url.Action("Details", "Library", new { id = item.GameID})"><image id="libraryLoopImages" src="@Html.DisplayFor(modelItem => item.CoverID)" /></a>
             <h3>
                 @Html.DisplayFor(modelItem => item.Name)

@@ -60,7 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiDisplay.cs" />
+    <Compile Include="ApiModels\ApiAgeRating.cs" />
+    <Compile Include="ApiModels\ApiCover.cs" />
+    <Compile Include="ApiModels\ApiDisplay.cs" />
+    <Compile Include="ApiModels\ApiFirstCall.cs" />
+    <Compile Include="ApiModels\ApiGenre.cs" />
+    <Compile Include="ApiModels\ApiReleaseDates.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveCreate.cs" />

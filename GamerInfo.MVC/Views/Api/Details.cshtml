@@ -1,0 +1,29 @@
+﻿@model GamerInfo.Models.ApiModels.ApiDisplay
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<section class="detailsData">
+    <image id="detailsImage" src="@Html.DisplayFor(model => model.CoverID)" />
+    <div>
+        <h4>
+            @Html.DisplayFor(model => model.Name)
+        </h4>
+        <p>
+            @Html.DisplayFor(model => model.Genre) --
+            @Html.DisplayFor(model => model.AgeRating) --
+            @Html.DisplayFor(model => model.ReleaseDate)
+        </p>
+        <h5>
+            @Html.DisplayFor(model => model.Summary)
+        </h5>
+        @Html.ActionLink("Add to Library", "AddToLibrary", Model)
+    </div>
+</section>
+
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,4 +1,5 @@
-﻿using GamerInfo.Models;
+﻿using GamerInfo.Data;
+using GamerInfo.Models.ApiModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,43 +17,223 @@ namespace GamerInfo.Services
     {
         private string URL = "https://api-v3.igdb.com/";
         private string Key = "4e0ed404bf691e52cb4cedf37ee1551d";
-
-        public ApiService() { }
-
-        public object GetApiGames()
+        private readonly Guid _userId;
+        public ApiService(Guid userId)
         {
+            _userId = userId;
+        }
+
+        //callsapi and saves basic data in model
+        public List<ApiDisplay> GetApiGames()
+        {
+            List<ApiFirstCall> gameObject;
+
             using (var client = new WebClient())
             {
                 //release_dates, age_ratings, genres
+                client.BaseAddress = URL;
                 client.Headers.Add("user-key", Key);
-                string data = "fields name,popularity,cover,summary; sort popularity desc;";
-                string result = client.UploadString(URL + "games/", data).Replace("\n", "");
-                List<object> obj = JsonConvert.DeserializeObject<List<object>>(result);
-                List<ApiDisplay> whattheheck = null;
+                string gameData = "fields name,popularity,cover,summary,genres,release_dates,age_ratings; sort popularity desc;";
+                string gameResult = client.UploadString(URL + "games/", gameData);
+                List<ApiFirstCall> obj = JsonConvert.DeserializeObject<List<ApiFirstCall>>(gameResult);
+                gameObject = obj;
 
+                List<ApiDisplay> displayList = new List<ApiDisplay>();
 
                 foreach (var item in obj)
                 {
-                    var stringIt = item.ToString();
-                    var okay = JsonConvert.DeserializeObject<Dictionary<string, string>>(stringIt);
-                    string id;
-                    bool forFun = okay.TryGetValue("id", out id);
-                    char[] plsdearlord = id.ToCharArray();
-                    string whatever = new string(plsdearlord);
-                    //int idAsNumberHopefully = whatever;
-                    
-                    
-                    ApiDisplay browseApi = new ApiDisplay
+                    //covers
+                    if (item.Cover != null)
                     {
-                        GameID = whatever,
-                        Name = okay["name"],
-                        Summary = okay["summary"],
+                        int coverId = int.Parse(item.Cover);
+                        string response = GetCoverInfo(coverId);
+                        item.Cover = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{response}.jpg";
+                    }
+                    else
+                    {
+                        item.Cover = "~Content/Assets/noImage.jpg";
+                    }
+                    //genres
+                    List<string> listOfGenres = new List<string>();
+                    foreach (var genre in item.Genres)
+                    {
+                        int genres = int.Parse(genre);
+                        string gResponse = GetGenreInfo(genres);
+                        listOfGenres.Add(gResponse);
+                    }
+                    item.Genres = null;
+                    item.Genres = listOfGenres.ToArray();
+                    //releasedates
+                    if (item.Release_dates != null)
+                    {
+                        int release = int.Parse(item.Release_dates[0]);
+                        string rResponse = GetReleaseDateInfo(release);
+                        List<string> convertRResponse = new List<string>();
+                        convertRResponse.Add(rResponse);
+                        item.Release_dates = convertRResponse.ToArray();
+                    }
+                    else item.Release_dates = null;
+                    //ageratings
+                    if (item.Age_ratings != null)
+                    {
+                        int ageRatingId = int.Parse(item.Age_ratings[0]);
+                        string aResponse = GetAgeRatingInfo(ageRatingId);
+                        List<string> ratingList = new List<string>();
+                        ratingList.Add(aResponse);
+                        item.Age_ratings = ratingList.ToArray();
+                    }
+                    else
+                    {
+                        List<string> rate = new List<string> { "No Rating" };
+                        item.Age_ratings = rate.ToArray();
+                    }
+
+                    string genreStr = "";
+                    foreach (var genre in item.Genres)
+                    {
+                        genreStr = genreStr + " " + genre;
+                    }
+                    ApiDisplay model = new ApiDisplay
+                    {
+                        GameID = int.Parse(item.Id),
+                        Name = item.Name,
+                        Summary = item.Summary,
+                        CoverID = item.Cover,
+                        Genre = genreStr,
+                        AgeRating = item.Age_ratings[0],
+                        ReleaseDate = DateTime.Parse(item.Release_dates[0])
                     };
+                    displayList.Add(model);
                 }
-
-                return obj;
-
+                return displayList;
             };
+        }
+
+        //get cover info
+        public string GetCoverInfo(int coverId)
+        {
+            using (var client = new WebClient())
+            {
+                client.BaseAddress = URL;
+                client.Headers.Clear();
+                client.Headers.Add("user-key", Key);
+                string coverData = $"fields id,game,image_id; where id = {coverId};";
+                string coverResult = client.UploadString(URL + "covers/", coverData);
+                List<ApiCover> result = JsonConvert.DeserializeObject<List<ApiCover>>(coverResult);
+                return result[0].Image_id;
+            }
+        }
+        //get Genres info
+        public string GetGenreInfo(int genreId)
+        {
+            using (var client = new WebClient())
+            {
+                client.BaseAddress = URL;
+                client.Headers.Clear();
+                client.Headers.Add("user-key", Key);
+                string genreData = $"fields id,name; where id = {genreId};";
+                string genreResult = client.UploadString(URL + "genres/", genreData);
+                List<ApiGenre> result = JsonConvert.DeserializeObject<List<ApiGenre>>(genreResult);
+
+                return result[0].Name;
+            }
+        }
+        //get release date info
+        public string GetReleaseDateInfo(int releaseId)
+        {
+            using (var client = new WebClient())
+            {
+                client.BaseAddress = URL;
+                client.Headers.Clear();
+                client.Headers.Add("user-key", Key);
+                string releaseData = $"fields id,human; where id = {releaseId};";
+                string releaseResult = client.UploadString(URL + "release_dates/", releaseData);
+                List<ApiReleaseDates> listOfDates = JsonConvert.DeserializeObject<List<ApiReleaseDates>>(releaseResult);
+                return listOfDates[0].Human;
+            }
+        }
+        //get age rating information
+        public string GetAgeRatingInfo(int ratingId)
+        {
+            using (var client = new WebClient())
+            {
+                client.BaseAddress = URL;
+                client.Headers.Clear();
+                client.Headers.Add("user-key", Key);
+                string ratingData = $"fields id,rating; where id = {ratingId};";
+                string result = client.UploadString(URL + "age_ratings/", ratingData);
+                List<ApiAgeRating> response = JsonConvert.DeserializeObject<List<ApiAgeRating>>(result);
+                if (response[0].Rating == "1")
+                {
+                    return "3+";
+                }
+                else if (response[0].Rating == "2")
+                {
+                    return "7+";
+                }
+                else if (response[0].Rating == "3")
+                {
+                    return "12+";
+                }
+                else if (response[0].Rating == "4")
+                {
+                    return "16+";
+                }
+                else if (response[0].Rating == "5")
+                {
+                    return "18+";
+                }
+                else if (response[0].Rating == "6")
+                {
+                    return "Rating Pending";
+                }
+                else if (response[0].Rating == "7")
+                {
+                    return "EC (Early Childhood)";
+                }
+                else if (response[0].Rating == "8")
+                {
+                    return "E";
+                }
+                else if (response[0].Rating == "9")
+                {
+                    return "E10";
+                }
+                else if (response[0].Rating == "10")
+                {
+                    return "T";
+                }
+                else if (response[0].Rating == "11")
+                {
+                    return "M";
+                }
+                else if (response[0].Rating == "12")
+                {
+                    return "AO";
+                }
+                else return null;
+            }
+        }
+
+        //add to library (converts from apidisplay to GameData and saves)
+        public bool AddGameToLibrary(ApiDisplay item)
+        {
+            var entity = new GameData
+            {
+                OwnerID = _userId,
+                GameID = item.GameID,
+                Name = item.Name,
+                Summary = item.Summary,
+                CoverID = item.CoverID,
+                AgeRating = item.AgeRating,
+                ReleaseDate = item.ReleaseDate,
+                Genre = item.Genre,
+            };
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.Games.Add(entity);
+                return ctx.SaveChanges() == 1;
+            }
         }
     }
 }

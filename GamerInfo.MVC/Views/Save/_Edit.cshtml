@@ -1,9 +1,8 @@
 ﻿@model GamerInfo.Models.SaveDisplay
 
 
-
-<a data-target="#mySaveEditModal" data-toggle="modal">Edit Save File</a>
-<div class="modal" id="mySaveEditModal" tabindex="-1">
+<a data-target="#@Model.SaveID" data-toggle="modal">Edit Save File</a>
+<div class="modal" id="@Model.SaveID" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

@@ -1,4 +1,6 @@
-﻿using GamerInfo.Services;
+﻿using GamerInfo.Models.ApiModels;
+using GamerInfo.Services;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +15,36 @@ namespace GamerInfo.MVC.Controllers
         public ActionResult Index()
         {
             var aservice = CreateApiService();
-            object obj = aservice.GetApiGames();
-            return View(obj);
+            List<ApiDisplay> browsePopular = aservice.GetApiGames();
+            return View(browsePopular);
         }
 
+        //Details
+        public ActionResult Details(ApiDisplay item)
+        {
+            return View(item);
+        }
+
+        //AddToLibrary
+        public ActionResult AddToLibrary(ApiDisplay item)
+        {
+            var aService = CreateApiService();
+            if (aService.AddGameToLibrary(item))
+            {
+                TempData["SaveResult"] = "Game successfully added to library!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["FailResult"] = "Game NOT added to library";
+                return RedirectToAction("Index");
+            }
+        }
 
         public ApiService CreateApiService()
         {
-            var service = new ApiService();
+            Guid userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ApiService(userId);
             return service;
         }
     }
