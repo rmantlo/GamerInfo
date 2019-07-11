@@ -1,4 +1,5 @@
 ﻿using GamerInfo.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,15 +19,40 @@ namespace GamerInfo.Services
 
         public ApiService() { }
 
-        public void GetApiGames()
+        public object GetApiGames()
         {
             using (var client = new WebClient())
             {
+                //release_dates, age_ratings, genres
                 client.Headers.Add("user-key", Key);
-                string data = "fields name,popularity; sort popularity desc;";
-                var result = client.UploadString(URL + "games/", data);
-                
-            }
+                string data = "fields name,popularity,cover,summary; sort popularity desc;";
+                string result = client.UploadString(URL + "games/", data).Replace("\n", "");
+                List<object> obj = JsonConvert.DeserializeObject<List<object>>(result);
+                List<ApiDisplay> whattheheck = null;
+
+
+                foreach (var item in obj)
+                {
+                    var stringIt = item.ToString();
+                    var okay = JsonConvert.DeserializeObject<Dictionary<string, string>>(stringIt);
+                    string id;
+                    bool forFun = okay.TryGetValue("id", out id);
+                    char[] plsdearlord = id.ToCharArray();
+                    string whatever = new string(plsdearlord);
+                    //int idAsNumberHopefully = whatever;
+                    
+                    
+                    ApiDisplay browseApi = new ApiDisplay
+                    {
+                        GameID = whatever,
+                        Name = okay["name"],
+                        Summary = okay["summary"],
+                    };
+                }
+
+                return obj;
+
+            };
         }
     }
 }

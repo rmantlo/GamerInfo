@@ -249,10 +249,10 @@
     <Content Include="Views\Save\_Create.cshtml" />
     <Content Include="Views\Save\_Edit.cshtml" />
     <Content Include="Views\Save\_Delete.cshtml" />
+    <Content Include="Views\Api\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Api\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
