@@ -21,10 +21,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    
+
+                    <li>@Html.ActionLink("Browse Games", "Index", "Api")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Browse Games", "Index", "Api")</li>
                         <li>@Html.ActionLink("My Game Library", "Index", "Library")</li>
                     }
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>

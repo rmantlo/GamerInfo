@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GamerInfo.MVC.Models;
+using GamerInfo.Services;
 
 namespace GamerInfo.MVC.Controllers
 {
@@ -32,9 +33,9 @@ namespace GamerInfo.MVC.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -64,6 +65,7 @@ namespace GamerInfo.MVC.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            ViewBag.ID = userId;
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -333,7 +335,7 @@ namespace GamerInfo.MVC.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -384,6 +386,6 @@ namespace GamerInfo.MVC.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }
