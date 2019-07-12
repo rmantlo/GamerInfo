@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GamerInfo.MVC.Models;
 using GamerInfo.Services;
+using GamerInfo.Data;
 
 namespace GamerInfo.MVC.Controllers
 {
@@ -72,9 +73,29 @@ namespace GamerInfo.MVC.Controllers
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                IsFamilyFriendly = GetUserFriendlyValue(userId),
+                ThemeType = GetThemeType(userId)
             };
             return View(model);
+        }
+
+        private TypeOfTheme GetThemeType(string userId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.Users.Single(e => e.Id == userId);
+                return entity.ThemeType;
+            }
+        }
+
+        private bool GetUserFriendlyValue(string userId)
+        {
+            using( var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.Users.Single(e => e.Id == userId);
+                return entity.IsFamilyFriendly;
+            }
         }
 
         //

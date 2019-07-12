@@ -28,9 +28,20 @@
             @Html.DisplayFor(model => model.IsFamilyFriendly)
         </dd>
         <dt>Change color Theme: </dt>
+
         <dd>
-            woah
+            @Html.RadioButtonFor(x => x.ThemeType, Model.ThemeType)
+            <label>Default</label>
         </dd>
+        <dd>
+            @Html.RadioButtonFor(x => x.ThemeType, 1)
+            <label>Night Mode</label>
+        </dd>
+        <dd>
+            @Html.RadioButtonFor(x => x.ThemeType, 2)
+            <label>Party Mode</label>
+        </dd>
+
         @*<dt>External Logins:</dt>
             <dd>
                 @Model.Logins.Count [
@@ -97,6 +108,15 @@
 @section scripts {
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
+            var modelValue = @Html.Raw(Json.Encode(Model.IsFamilyFriendly));
+            //console.log(modelValue);
+            
+            if (modelValue) {
+                $("input[data-toggle='familyF']").prop("checked", true)
+            } else {
+                $("input[data-toggle='familyF']").prop("checked", false)
+            }
+
             $("input[data-toggle='familyF']")
                 .click(function (e) {
                     var target = $(e.target);
@@ -104,7 +124,7 @@
 
                     $.ajax({
                         method: setFriendly ? "DELETE" : "PUT",
-                        url: @Url.Action("g", "Friend"),
+                        url: setFriendly ? "Friendly/ToggleFriendlyOff" : "Friendly/ToggleFriendlyOn",
                         data: null
                     })
                         .done(function (e) {
@@ -118,5 +138,9 @@
                         });
                 });
         });
+
+        $(document).ready(function () {
+            $("")
+        })
     </script>
 }

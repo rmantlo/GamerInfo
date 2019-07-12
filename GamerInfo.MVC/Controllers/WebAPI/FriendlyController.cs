@@ -9,23 +9,27 @@ using System.Web.Http;
 namespace GamerInfo.MVC.Controllers.WebApi
 {
     [Authorize]
-    [RoutePrefix("Friend")]
     public class FriendlyController : ApiController
     {
         //UPDATE USER ISFAMILYFRIEND
         private bool SetFamilyFriendly(bool value)
         {
-            //var userId = Guid.Parse(User.Identity.GetUserId());
-            //var service = new UserService(userId);
-            //return service.UpdateUserFriendly(value);
-            return true;
+            var userId = User.Identity.GetUserId();
+            var service = new UserService(userId);
+            return service.UpdateUserFriendly(value);
 
         }
-        [Route("g")]
         [HttpPut]
-        public bool ToggleFriendlyOn() => SetFamilyFriendly(true);
         [Route("g")]
+        public bool ToggleFriendlyOn() => SetFamilyFriendly(true);
         [HttpDelete]
+        [Route("g")]
         public bool ToggleFriendlyOff() => SetFamilyFriendly(false);
+
+        [HttpPost]
+        public string SetThemeType()
+        {
+            return "Theme method touched";
+        }
     }
 }

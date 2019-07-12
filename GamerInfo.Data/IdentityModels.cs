@@ -22,7 +22,7 @@ namespace GamerInfo.Data
         //add properties here to add then to the user database table
         [DefaultValue(false)]
         public bool IsFamilyFriendly { get; set; }
-        [DefaultValue("Default")]
+        [DefaultValue(1)]
         public TypeOfTheme ThemeType { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

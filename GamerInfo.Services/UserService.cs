@@ -9,8 +9,8 @@ namespace GamerInfo.Services
 {
     public class UserService
     {
-        private readonly Guid _userId;
-        public UserService(Guid userId)
+        private readonly string _userId;
+        public UserService(string userId)
         {
             _userId = userId;
         }
@@ -18,7 +18,7 @@ namespace GamerInfo.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var editUser = ctx.Users.Single(e => Guid.Parse(e.Id) == _userId);
+                var editUser = ctx.Users.Single(e => e.Id == _userId);
                 editUser.IsFamilyFriendly = boolChange;
 
                 return ctx.SaveChanges() == 1;
