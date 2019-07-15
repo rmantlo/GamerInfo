@@ -12,11 +12,21 @@ namespace GamerInfo.MVC.Controllers
     public class ApiController : Controller
     {
         // GET: Api
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
             var aservice = CreateApiService();
-            List<ApiDisplay> browsePopular = aservice.GetApiGames();
-            return View(browsePopular);
+            if (search != "" && search != null)
+            {
+                List<ApiDisplay> searchGames = aservice.SearchResults(search);
+                return View(searchGames);
+            }
+            else
+            {
+                //List<ApiDisplay> browsePopular = aservice.BrowseGames();
+                //return View(browsePopular);
+                List<ApiDisplay> searchGames = new List<ApiDisplay>();
+                return View(searchGames);
+            }
         }
 
         //Details
@@ -40,7 +50,6 @@ namespace GamerInfo.MVC.Controllers
                 return RedirectToAction("Index");
             }
         }
-
         public ApiService CreateApiService()
         {
             Guid userId = Guid.Parse(User.Identity.GetUserId());

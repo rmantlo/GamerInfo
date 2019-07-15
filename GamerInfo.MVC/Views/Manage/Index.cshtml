@@ -23,94 +23,45 @@
             }
             ]
         </dd>
+        <br />
         <dt>Make Family Friendly: </dt>
         <dd>
-            @Html.DisplayFor(model => model.IsFamilyFriendly)
+            @Html.DisplayFor(model => model.IsFamilyFriendly) (removes non rated and rated M games from view! warning:: this decreases number of game results from searches)
         </dd>
+        <br />
         <dt>Change color Theme: </dt>
-
         <dd>
-            @Html.RadioButtonFor(x => x.ThemeType, Model.ThemeType)
+            <div class="switch">
+                @Html.RadioButtonFor(x => x.ThemeType, 0)
+                <span class="slider round"></span>
+            </div>
             <label>Default</label>
         </dd>
         <dd>
-            @Html.RadioButtonFor(x => x.ThemeType, 1)
+            <div class="switch">
+                @Html.RadioButtonFor(x => x.ThemeType, 1)
+                <span class="slider round"></span>
+            </div>
             <label>Night Mode</label>
         </dd>
         <dd>
-            @Html.RadioButtonFor(x => x.ThemeType, 2)
+            <div class="switch">
+                @Html.RadioButtonFor(x => x.ThemeType, 2)
+                <span class="slider round"></span>
+            </div>
             <label>Party Mode</label>
         </dd>
-
-        @*<dt>External Logins:</dt>
-            <dd>
-                @Model.Logins.Count [
-                @Html.ActionLink("Manage", "ManageLogins") ]
-            </dd>*@
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-
-             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-        @*
-            <dt>Phone Number:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
-                    }
-                }
-                else
-                {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                }
-            </dd>
-        *@
-        @*<dt>Two-Factor Authentication:</dt>
-            <dd>
-                <p>
-                    There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                    for details on setting up this ASP.NET application to support two-factor authentication.
-                </p>*@
-        @*@if (Model.TwoFactor)
-            {
-                using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <text>Enabled
-                    <input type="submit" value="Disable" class="btn btn-link" />
-                    </text>
-                }
-            }
-            else
-            {
-                using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <text>Disabled
-                    <input type="submit" value="Enable" class="btn btn-link" />
-                    </text>
-                }
-            }*@
-        @*</dd>*@
     </dl>
 </div>
 
 @section scripts {
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
+
+            //FamilyFriendly functions
             var modelValue = @Html.Raw(Json.Encode(Model.IsFamilyFriendly));
             //console.log(modelValue);
-            
+
             if (modelValue) {
                 $("input[data-toggle='familyF']").prop("checked", true)
             } else {
@@ -121,7 +72,6 @@
                 .click(function (e) {
                     var target = $(e.target);
                     var setFriendly = target.hasClass("yes");
-
                     $.ajax({
                         method: setFriendly ? "DELETE" : "PUT",
                         url: setFriendly ? "Friendly/ToggleFriendlyOff" : "Friendly/ToggleFriendlyOn",
@@ -130,6 +80,7 @@
                         .done(function (e) {
                             console.log(e);
                             target.removeClass();
+                            target.addClass("slider round");
                             target.addClass((setFriendly ? "no" : "yes"));
                         })
                         .fail(function (r) {
@@ -137,10 +88,130 @@
                             alert("familyfriendly fail");
                         });
                 });
-        });
 
-        $(document).ready(function () {
-            $("")
-        })
+            //Theme functions
+            var modelTheme = @Html.Raw(Json.Encode(Model.ThemeType));
+            console.log(modelTheme)
+            if (modelTheme == 0) {
+                $("input[value='0']").prop("checked", true)
+            } else if (modelTheme == 1) {
+                $("input[value='1']").prop("checked", true)
+            } else if (modelTheme == 2) {
+                $("input[value='2']").prop("checked", true)
+            }
+
+            $("input[value='0']").click(function (e) {
+                var target = $(e.target);
+
+                $.ajax({
+                    method: "PUT",
+                    url: "/Theme/SetThemeValue/0",
+                    data: null
+                })
+                    .done(function (e) {
+                        console.log(e);
+                    })
+                    .fail(function (r) {
+                        console.log(r);
+                    })
+            })
+            $("input[value='1']").click(function (e) {
+                var target = $(e.target);
+
+                $.ajax({
+                    method: "PUT",
+                    url: "/Theme/SetThemeValue/1",
+                    data: null
+                })
+                    .done(function (e) {
+                        console.log(e);
+                    })
+                    .fail(function (r) {
+                        console.log(r);
+                    })
+            })
+            $("input[value='2']").click(function (e) {
+                var target = $(e.target);
+
+                $.ajax({
+                    method: "PUT",
+                    url: "/Theme/SetThemeValue/2",
+                    data: null
+                })
+                    .done(function (e) {
+                        console.log(e);
+                    })
+                    .fail(function (r) {
+                        console.log(r);
+                    })
+            })
+
+
+
+        });
     </script>
 }
+
+
+
+
+@*<dt>External Logins:</dt>
+    <dd>
+        @Model.Logins.Count [
+        @Html.ActionLink("Manage", "ManageLogins") ]
+    </dd>*@
+@*
+    Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+     See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+        for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+     Uncomment the following block after you have set up two-factor authentication
+*@
+@*
+    <dt>Phone Number:</dt>
+    <dd>
+        @(Model.PhoneNumber ?? "None")
+        @if (Model.PhoneNumber != null)
+        {
+            <br />
+            <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+            using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+            }
+        }
+        else
+        {
+            <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+        }
+    </dd>
+*@
+@*<dt>Two-Factor Authentication:</dt>
+    <dd>
+        <p>
+            There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+            for details on setting up this ASP.NET application to support two-factor authentication.
+        </p>*@
+@*@if (Model.TwoFactor)
+    {
+        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <text>Enabled
+            <input type="submit" value="Disable" class="btn btn-link" />
+            </text>
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <text>Disabled
+            <input type="submit" value="Enable" class="btn btn-link" />
+            </text>
+        }
+    }*@
+@*</dd>*@

@@ -13,7 +13,7 @@ namespace GamerInfo.Models.ApiModels
         public string Popularity { get; set; }
         public string Summary { get; set; }
         public string Cover { get; set; }
-        public string[] Release_dates { get; set; }
+        public string First_release_date { get; set; }
         public string[] Age_ratings { get; set; }
         public string[] Genres { get; set; }
     }

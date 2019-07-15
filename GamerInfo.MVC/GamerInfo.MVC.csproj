@@ -184,6 +184,8 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SaveController.cs" />
     <Compile Include="Controllers\WebAPI\FriendlyController.cs" />
+    <Compile Include="Controllers\WebAPI\StarController.cs" />
+    <Compile Include="Controllers\WebAPI\ThemeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -261,10 +263,13 @@
     <Content Include="Views\Api\Index.cshtml" />
     <Content Include="Views\Api\Details.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FamilyFriendly.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Starred.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Friendly\" />
+    <Folder Include="Views\Star\" />
+    <Folder Include="Views\Theme\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

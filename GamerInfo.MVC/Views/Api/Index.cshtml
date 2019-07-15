@@ -1,20 +1,46 @@
 ﻿@model IEnumerable<GamerInfo.Models.ApiModels.ApiDisplay>
 
-@{
-    ViewBag.Title = "Index";
-}
+<h1>Browse Games</h1>
+<p>Can't find a game? Go to your library and create it yourself!</p>
 
-<h2>Index</h2>
+<div>
+    <label>Search Games: </label>
+    <input id="searchValue" placeholder="enter title" />
+    <button type="submit" class="btn btn-default" id="searchFunction">Search</button>
+</div>
 
 <div class="container">
     @foreach (var item in Model)
-    {
-        <div class="col-md-4">
-            <a href="@Url.Action("Details", "Api", item)"><image id="libraryLoopImages" src="@Html.DisplayFor(modelItem => item.CoverID)" /></a>
-            <h3>
-                @Html.DisplayFor(modelItem => item.Name)
-            </h3>
-        </div>
-    }
+        {
+            <div class="col-md-4">
+                <a href="@Url.Action("Details", "Api", item)"><image id="libraryLoopImages" src="@Html.DisplayFor(modelItem => item.CoverID)" /></a>
+                <h3>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </h3>
+            </div>
+        }
 
 </div>
+@section scripts {
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            $("button#searchFunction")
+                .click(function (e) {
+                    var target = $(e.target);
+                    var search = $("input#searchValue").val();
+                    $.ajax({
+                        method: "GET",
+                        url: `/Api/Index`,
+                        data: {search: search},
+                        dataType: 'json'
+                    })
+                        .done(function (e) {
+                            console.log(e)
+                        })
+                        .fail(function (r) {
+                            console.log(r)
+                        })
+                })
+        })
+    </script>
+}

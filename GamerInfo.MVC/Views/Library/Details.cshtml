@@ -24,7 +24,7 @@
             @TempData["FailResult"]
         </div>
     }
-    
+
 
     <p>
         <a data-target="#myEditModal" data-toggle="modal">Edit Game</a> |
@@ -81,9 +81,38 @@
         @Html.DisplayFor(model => model.UserComments)
     </section>
     <section class="saveData">
-        @{ 
+        @{
             var saveDisplayModel = Model;
         }
         @Html.Partial("~/Views/Save/_Index.cshtml", Model, new ViewDataDictionary { { "GameID", Model.GameID } })
     </section>
 </div>
+
+@section scripts{
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            $("i[data-toggle='star']")
+                .css({ "cursor": "pointer" })
+                .click(function (e) {
+                    console.log("hello");
+                    var target = $(e.target);
+                    var saveId = target.attr("data-id");
+                    console.log(saveId);
+                    var starSet = target.hasClass("glyphicon-star");
+
+                    $.ajax({
+                        method: starSet ? "DELETE" : "PUT",
+                        url: starSet ? `/Star/StarToggleOff/${saveId}` : `/Star/StarToggleOn/${saveId}`,
+                        data: null
+                    })
+                        .done(function (r) {
+                            target.removeClass();
+                            target.addClass("glyphicon " + (starSet ? "glyphicon-star-empty" : "glyphicon-star"));
+                        })
+                        .fail(function (r) {
+                            alert("Failed to change star status");
+                        });
+                });
+        });
+    </script>
+}

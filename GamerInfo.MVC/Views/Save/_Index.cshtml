@@ -22,7 +22,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IsCurrent)
+                @Html.DisplayFor(modelItem => item.IsCurrent, new { id = item.SaveID })
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SaveTitle)
@@ -41,3 +41,4 @@
     }
 </table>
 @Html.Partial("~/Views/Save/_Create.cshtml", new GamerInfo.Models.SaveCreate(), new ViewDataDictionary { { "GameID", ViewData["GameID"] } })
+

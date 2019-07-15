@@ -1,4 +1,5 @@
 ﻿@model bool
-    <div class="custom-control custom-switch">
-        <input type="checkbox" class="@(Model ? "yes" : "no")"  id="customSwitches" data-toggle="familyF"/>
-    </div>
+<div class="switch">
+    <input type="checkbox" data-toggle="familyF"class="@(Model ? "yes" : "no")" />
+    <span class="slider round"></span>
+</div>

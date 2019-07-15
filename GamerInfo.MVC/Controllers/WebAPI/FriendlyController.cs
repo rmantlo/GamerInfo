@@ -26,10 +26,5 @@ namespace GamerInfo.MVC.Controllers.WebApi
         [Route("g")]
         public bool ToggleFriendlyOff() => SetFamilyFriendly(false);
 
-        [HttpPost]
-        public string SetThemeType()
-        {
-            return "Theme method touched";
-        }
     }
 }

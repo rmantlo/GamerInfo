@@ -17,14 +17,32 @@ namespace GamerInfo.Services
     {
         private string URL = "https://api-v3.igdb.com/";
         private string Key = "4e0ed404bf691e52cb4cedf37ee1551d";
-        private readonly Guid _userId;
+        private readonly string _userId;
+        private readonly bool _isFamilyFriendly;
         public ApiService(Guid userId)
         {
-            _userId = userId;
+            _userId = userId.ToString();
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.Users.Single(e => e.Id == _userId);
+                _isFamilyFriendly = entity.IsFamilyFriendly;
+            }
         }
 
-        //callsapi and saves basic data in model
-        public List<ApiDisplay> GetApiGames()
+        //calls api and saves basic data in model
+        public List<ApiDisplay> BrowseGames()
+        {
+            var epochTry = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+            int epoch = Convert.ToInt32(epochTry);
+
+            string str = $"fields name,popularity,cover,summary,genres,first_release_date,age_ratings; where first_release_date < {epoch}; sort popularity desc;";
+            return GetApiGames(str);
+        }
+        public List<ApiDisplay> SearchResults()
+        {
+            return null;
+        }
+        private List<ApiDisplay> GetApiGames(string str)
         {
             List<ApiFirstCall> gameObject;
 
@@ -33,8 +51,8 @@ namespace GamerInfo.Services
                 //release_dates, age_ratings, genres
                 client.BaseAddress = URL;
                 client.Headers.Add("user-key", Key);
-                string gameData = "fields name,popularity,cover,summary,genres,release_dates,age_ratings; sort popularity desc;";
-                string gameResult = client.UploadString(URL + "games/", gameData);
+
+                string gameResult = client.UploadString(URL + "games/", str);
                 List<ApiFirstCall> obj = JsonConvert.DeserializeObject<List<ApiFirstCall>>(gameResult);
                 gameObject = obj;
 
@@ -64,15 +82,14 @@ namespace GamerInfo.Services
                     item.Genres = null;
                     item.Genres = listOfGenres.ToArray();
                     //releasedates
-                    if (item.Release_dates != null)
+                    if (item.First_release_date != null)
                     {
-                        int release = int.Parse(item.Release_dates[0]);
-                        string rResponse = GetReleaseDateInfo(release);
-                        List<string> convertRResponse = new List<string>();
-                        convertRResponse.Add(rResponse);
-                        item.Release_dates = convertRResponse.ToArray();
+                        int release = int.Parse(item.First_release_date);
+                        var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(release).ToShortDateString();
+
+                        item.First_release_date = date.ToString();
                     }
-                    else item.Release_dates = null;
+                    else item.First_release_date = null;
                     //ageratings
                     if (item.Age_ratings != null)
                     {
@@ -101,9 +118,20 @@ namespace GamerInfo.Services
                         CoverID = item.Cover,
                         Genre = genreStr,
                         AgeRating = item.Age_ratings[0],
-                        ReleaseDate = DateTime.Parse(item.Release_dates[0])
+                        ReleaseDate = DateTime.Parse(item.First_release_date)
                     };
-                    displayList.Add(model);
+                    if (_isFamilyFriendly)
+                    {
+                        if (model.AgeRating != "AO" && model.AgeRating != "M" && model.AgeRating != "Rating Pending" && model.AgeRating != "18+" && model.AgeRating != "No Rating")
+                        {
+                            displayList.Add(model);
+                        }
+
+                        
+                    } else
+                    {
+                        displayList.Add(model);
+                    }
                 }
                 return displayList;
             };
@@ -218,9 +246,10 @@ namespace GamerInfo.Services
         //add to library (converts from apidisplay to GameData and saves)
         public bool AddGameToLibrary(ApiDisplay item)
         {
+            Guid user = Guid.Parse(_userId);
             var entity = new GameData
             {
-                OwnerID = _userId,
+                OwnerID = user,
                 GameID = item.GameID,
                 Name = item.Name,
                 Summary = item.Summary,
