@@ -30,19 +30,97 @@ namespace GamerInfo.Services
         }
 
         //calls api and saves basic data in model
-        public List<ApiDisplay> BrowseGames()
+        public List<ApiDisplay> SearchResults(string searchTerm)
         {
-            var epochTry = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
-            int epoch = Convert.ToInt32(epochTry);
+            string str = $"fields name,cover,summary,genres,first_release_date,age_ratings; search '{searchTerm}'; limit 20;";
 
-            string str = $"fields name,popularity,cover,summary,genres,first_release_date,age_ratings; where first_release_date < {epoch}; sort popularity desc;";
-            return GetApiGames(str);
-        }
-        public List<ApiDisplay> SearchResults()
-        {
+            using (var client = new WebClient())
+            {
+                client.BaseAddress = URL;
+                client.Headers.Add("user-key", Key);
+                string gameResult = client.UploadString(URL + "search/", str);
+                List<ApiFirstCall> obj = JsonConvert.DeserializeObject<List<ApiFirstCall>>(gameResult);
+                List<ApiDisplay> displaySearchList = new List<ApiDisplay>();
+
+                foreach (var item in obj)
+                {
+                    //covers
+                    if (item.Cover != null)
+                    {
+                        int coverId = int.Parse(item.Cover);
+                        string response = GetCoverInfo(coverId);
+                        item.Cover = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{response}.jpg";
+                    }
+                    else
+                    {
+                        item.Cover = "~Content/Assets/noImage.jpg";
+                    }
+                    //genres
+                    List<string> listOfGenres = new List<string>();
+                    foreach (var genre in item.Genres)
+                    {
+                        int genres = int.Parse(genre);
+                        string gResponse = GetGenreInfo(genres);
+                        listOfGenres.Add(gResponse);
+                    }
+                    item.Genres = null;
+                    item.Genres = listOfGenres.ToArray();
+                    //releasedates
+                    if (item.First_release_date != null)
+                    {
+                        int release = int.Parse(item.First_release_date);
+                        var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(release).ToShortDateString();
+
+                        item.First_release_date = date.ToString();
+                    }
+                    else item.First_release_date = null;
+                    //ageratings
+                    if (item.Age_ratings != null)
+                    {
+                        int ageRatingId = int.Parse(item.Age_ratings[0]);
+                        string aResponse = GetAgeRatingInfo(ageRatingId);
+                        List<string> ratingList = new List<string>();
+                        ratingList.Add(aResponse);
+                        item.Age_ratings = ratingList.ToArray();
+                    }
+                    else
+                    {
+                        List<string> rate = new List<string> { "No Rating" };
+                        item.Age_ratings = rate.ToArray();
+                    }
+
+                    string genreStr = "";
+                    foreach (var genre in item.Genres)
+                    {
+                        genreStr = genreStr + " " + genre;
+                    }
+                    ApiDisplay model = new ApiDisplay
+                    {
+                        GameID = int.Parse(item.Id),
+                        Name = item.Name,
+                        Summary = item.Summary,
+                        CoverID = item.Cover,
+                        Genre = genreStr,
+                        AgeRating = item.Age_ratings[0],
+                        ReleaseDate = DateTime.Parse(item.First_release_date)
+                    };
+                    if (_isFamilyFriendly)
+                    {
+                        if (model.AgeRating != "AO" && model.AgeRating != "M" && model.AgeRating != "Rating Pending" && model.AgeRating != "18+" && model.AgeRating != "No Rating")
+                        {
+                            displaySearchList.Add(model);
+                        }
+                    }
+                    else
+                    {
+                        displaySearchList.Add(model);
+                    }
+                }
+            }
+
             return null;
         }
-        private List<ApiDisplay> GetApiGames(string str)
+        public List<ApiDisplay> GetBrowseGames()
         {
             List<ApiFirstCall> gameObject;
 
@@ -51,6 +129,11 @@ namespace GamerInfo.Services
                 //release_dates, age_ratings, genres
                 client.BaseAddress = URL;
                 client.Headers.Add("user-key", Key);
+
+                var epochTry = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+                int epoch = Convert.ToInt32(epochTry);
+
+                string str = $"fields name,popularity,cover,summary,genres,first_release_date,age_ratings; where first_release_date < {epoch}; sort popularity desc;";
 
                 string gameResult = client.UploadString(URL + "games/", str);
                 List<ApiFirstCall> obj = JsonConvert.DeserializeObject<List<ApiFirstCall>>(gameResult);
@@ -127,8 +210,9 @@ namespace GamerInfo.Services
                             displayList.Add(model);
                         }
 
-                        
-                    } else
+
+                    }
+                    else
                     {
                         displayList.Add(model);
                     }

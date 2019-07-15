@@ -22,7 +22,7 @@ namespace GamerInfo.MVC.Controllers
             }
             else
             {
-                //List<ApiDisplay> browsePopular = aservice.BrowseGames();
+                //List<ApiDisplay> browsePopular = aservice.GetBrowseGames();
                 //return View(browsePopular);
                 List<ApiDisplay> searchGames = new List<ApiDisplay>();
                 return View(searchGames);
