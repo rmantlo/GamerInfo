@@ -36,7 +36,6 @@
                         <li>@Html.ActionLink("Browse Games", "Index", "Api")</li>
                         <li>@Html.ActionLink("My Game Library", "Index", "Library")</li>
                     }
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -46,7 +45,7 @@
         @RenderBody()
         <hr />
         <footer class="container body-content">
-            <p>&copy; @DateTime.Now.Year - Rebekah Mantlo</p>
+            <p>&copy; @DateTime.Now.Year - Rebekah Mantlo - @Html.ActionLink("Contact", "Contact", "Home")</p>
         </footer>
     </div>
 

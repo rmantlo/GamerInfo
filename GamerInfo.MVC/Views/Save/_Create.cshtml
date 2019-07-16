@@ -2,15 +2,15 @@
 
 @*@ViewData["GameID"]*@
 
-<a data-target="#mySaveCreateModal" data-toggle="modal">Create new Save File</a>
+<a data-target="#mySaveCreateModal" data-toggle="modal">Create New Save File</a>
+<br/>
 <div class="modal" id="mySaveCreateModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <h4>Create new Save File</h4>
-            </div>
             <div class="modal-body">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h4>Create New Save File</h4>
+                <hr/>
                 @using (Html.BeginForm("Create", "Save", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
@@ -47,8 +47,8 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Create" class="btn btn-default" />
+                            <div style="text-align:center">
+                                <input type="submit" value="Create" class="btn btn-default" style="background: #8C418D; border-color: #A54EA6; color: #E3E3E3" />
                             </div>
                         </div>
                     </div>

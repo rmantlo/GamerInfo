@@ -30,7 +30,7 @@ textarea {
 /***********Manage controller views*******/
 
 /**Index**/
-dd, dt, p, h2, h4, label, h1{
+dd, dt, th, td, p, h2, h4, label, h1,h3{
     color: #E3E3E3 !important;
 }
 /*checkbox/radio toggle slider*/
@@ -123,6 +123,11 @@ input[type='radio']:checked + .slider:before {
 /************NAVBAR**************/
 .navbar-inverse {
     background-color: #523155;
+}
+
+/****modals*****/
+.modal-content {
+    background: #2C2B2C;
 }
 /**********Home Page*************/
 /*Index*/
@@ -233,18 +238,37 @@ input[type='radio']:checked + .slider:before {
 
 /**DETAILS PAGE**/
 .detailsData {
-    border: 1px solid black;
+    padding: 20px;
+    margin-bottom: 10px;
+    background: #2C2B2C;
+    border-radius: 8px;
+    box-shadow: 1px 1px 10px #3E3E3E;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
 
+@media (max-width: 700px) {
+    .detailsData {
+        flex-wrap: wrap;
+    }
+}
+
 #detailsImage {
     width: 264px;
+    height: fit-content;
+}
+
+.detailsInfo {
+    padding: 0 15px;
 }
 
 .saveData {
-    border: 1px solid black;
+    padding: 20px;
+    background: #2C2B2C;
+    border-radius: 8px;
+    box-shadow: 1px 1px 10px #3E3E3E;
+    margin-bottom: 10px;
 }
 /*DETAILS EDIT*/
 .control-label {

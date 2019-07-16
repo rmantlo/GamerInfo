@@ -4,26 +4,32 @@
     ViewBag.Title = "Details";
 }
 
+<div class="container" style="margin-bottom: 50px">
 
-<section class="detailsData">
-    <image id="detailsImage" src="@Html.DisplayFor(model => model.CoverID)" />
-    <div>
-        <h4>
-            @Html.DisplayFor(model => model.Name)
-        </h4>
-        <p>
-            @Html.DisplayFor(model => model.Genre) --
-            @Html.DisplayFor(model => model.AgeRating) --
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </p>
-        <h5>
-            @Html.DisplayFor(model => model.Summary)
-        </h5>
-        @Html.ActionLink("Add to Library", "AddToLibrary", Model)
-    </div>
-</section>
+    <section class="detailsData">
+        <image id="detailsImage" src="@Html.DisplayFor(model => model.CoverID)" />
+        <div class="detailsInfo">
+            <h4>
+                @Html.DisplayFor(model => model.Name)
+            </h4>
+            <p><b>Genre:</b> @Html.DisplayFor(model => model.Genre)</p>
+            <p>
+                <b>Age Rating: </b>
+                @Html.DisplayFor(model => model.AgeRating)
+            </p>
+            <p>
+                <b>Release Date: </b>
+                @Html.DisplayFor(model => model.ReleaseDate)
+            </p>
+            <h4 style="line-height: 30px; text-indent:25px;">
+                @Html.DisplayFor(model => model.Summary)
+            </h4>
+            @Html.ActionLink("Add to Library", "AddToLibrary", Model)
+        </div>
+    </section>
 
 
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>
