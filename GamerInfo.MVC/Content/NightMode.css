@@ -25,7 +25,7 @@ textarea {
 
 /************MY CODE********************/
 /****USER MANAGE****/
-   /*checkbox toggle slider*/
+/*checkbox toggle slider*/
 /* Hide default HTML checkbox */
 .switch input[type='checkbox'] {
     opacity: 0;
@@ -56,18 +56,19 @@ textarea {
     transition: .4s;
     z-index: -1;
 }
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 15px;
-    width: 15px;
-    left: 4px;
-    bottom: 1px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-    z-index: -1;
-}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 15px;
+        width: 15px;
+        left: 4px;
+        bottom: 1px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+        z-index: -1;
+    }
 
 input[type='checkbox']:checked + .slider {
     background-color: #2196F3;
@@ -86,10 +87,11 @@ input[type='checkbox']:checked + .slider:before {
 .slider.round {
     border-radius: 34px;
 }
-.slider.round:before {
-    border-radius: 50%;
-}
-   /*radio toggle*/
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+/*radio toggle*/
 .switch input[type='radio'] {
     opacity: 0;
     width: 30px;
@@ -97,6 +99,7 @@ input[type='checkbox']:checked + .slider:before {
     margin: 0;
     z-index: 1;
 }
+
 input[type='radio']:checked + .slider {
     background-color: #2196F3;
 }
@@ -112,34 +115,36 @@ input[type='radio']:checked + .slider:before {
 }
 
 /****GAME LIBRARY****/
-#libraryLoopImages{
+#libraryLoopImages {
     display: inline-block;
     width: 264px;
-    height:auto;
+    height: auto;
 }
 
 /****DETAILS PAGE****/
-.detailsData{
+.detailsData {
     border: 1px solid black;
-    display:flex;
-    flex-direction:row;
+    display: flex;
+    flex-direction: row;
     justify-content: space-around;
 }
-#detailsImage{
+
+#detailsImage {
     width: 264px;
 }
-.saveData{
+
+.saveData {
     border: 1px solid black;
 }
 /*DETAILS EDIT*/
-.control-label{
+.control-label {
     text-align: left !important;
 }
 
-.jumbotron{
-    background-color: yellow;
+.jumbotron {
+    background-color: blue;
 }
 
-#tester{
-    background-color: yellow;
+#tester {
+    background-color: blue;
 }

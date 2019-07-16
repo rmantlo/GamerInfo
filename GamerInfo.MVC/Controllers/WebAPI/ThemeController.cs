@@ -12,13 +12,14 @@ namespace GamerInfo.MVC.Controllers.WebAPI
     {
         // GET: Theme
 
-        public string SetThemeValue(int id)
+        public ActionResult SetThemeValue(int id)
         {
             var userId = User.Identity.GetUserId();
             var service = new UserService(userId);
             bool result = service.UpdateThemeValue(id);
 
-            return $"Theme method touched {id}, {result}";
+            //return $"Theme method touched {id}, {result}";
+            return RedirectToAction("Index", "Manage");
         }
     }
 }

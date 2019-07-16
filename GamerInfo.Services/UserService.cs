@@ -34,5 +34,15 @@ namespace GamerInfo.Services
                 return ctx.SaveChanges() == 1;
             }
         }
+        public TypeOfTheme GetThemeValue()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var edit = ctx.Users.Single(e => e.Id == _userId);
+                var result = edit.ThemeType;
+
+                return result;
+            }
+        }
     }
 }

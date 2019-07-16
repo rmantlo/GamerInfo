@@ -1,5 +1,8 @@
 ﻿using System.Web;
 using System.Web.Optimization;
+using GamerInfo.Data;
+using GamerInfo.Services;
+using Microsoft.AspNet.Identity;
 
 namespace GamerInfo.MVC
 {
@@ -25,6 +28,7 @@ namespace GamerInfo.MVC
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
         }
     }
 }

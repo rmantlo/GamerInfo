@@ -4,7 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
+    @{ if (User.Identity.IsAuthenticated)
+        {
+            <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+            <link href="@Url.Action("CssThemes", "Manage")" rel="stylesheet" type="text/css" />
+        }
+        else
+        {
+            @Styles.Render("~/Content/css")
+        }
+    }
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
@@ -33,10 +42,10 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="bodyContent">
         @RenderBody()
         <hr />
-        <footer>
+        <footer class="container body-content">
             <p>&copy; @DateTime.Now.Year - Rebekah Mantlo</p>
         </footer>
     </div>

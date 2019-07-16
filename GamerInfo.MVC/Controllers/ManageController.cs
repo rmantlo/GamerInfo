@@ -91,13 +91,35 @@ namespace GamerInfo.MVC.Controllers
 
         private bool GetUserFriendlyValue(string userId)
         {
-            using( var ctx = new ApplicationDbContext())
+            using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.Users.Single(e => e.Id == userId);
                 return entity.IsFamilyFriendly;
             }
         }
+        public FileResult CssThemes()
+        {
+            var userId = User.Identity.GetUserId();
+            var service = new UserService(userId);
+            var theme = service.GetThemeValue();
 
+            if (theme == TypeOfTheme.Default)
+            {
+                return File("/Content/site.css", "text/css");
+            }
+            else if (theme == TypeOfTheme.Night)
+            {
+                return File("/Content/NightMode.css", "text/css");
+            }
+            else if (theme == TypeOfTheme.Party)
+            {
+                return File("/Content/PartyMode.css", "text/css");
+            }
+            else
+            {
+                return File("/Content/site.css", "text/css");
+            }
+        }
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]

@@ -3,7 +3,7 @@
     ViewBag.Title = "Manage";
 }
 
-<h2>Account Management</h2>
+<h2 id="tester">Account Management</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
@@ -109,7 +109,8 @@
                     data: null
                 })
                     .done(function (e) {
-                        console.log(e);
+                        //console.log(e);
+                        $("body").html(e);
                     })
                     .fail(function (r) {
                         console.log(r);
@@ -124,7 +125,8 @@
                     data: null
                 })
                     .done(function (e) {
-                        console.log(e);
+                        //console.log(e);
+                        $("body").html(e);
                     })
                     .fail(function (r) {
                         console.log(r);
@@ -139,7 +141,8 @@
                     data: null
                 })
                     .done(function (e) {
-                        console.log(e);
+                        //console.log(e);
+                        $("body").html(e);
                     })
                     .fail(function (r) {
                         console.log(r);

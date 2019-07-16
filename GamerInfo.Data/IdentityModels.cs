@@ -12,7 +12,7 @@ namespace GamerInfo.Data
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public enum TypeOfTheme
     {
-        Default = 1,
+        Default,
         Night,
         Party
     }
