@@ -17,7 +17,7 @@ namespace GamerInfo.MVC.Controllers
         {
             ViewBag.Message = "Your application description page.";
 
-            return View();
+            return View("Error");
         }
 
         public ActionResult Contact()

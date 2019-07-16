@@ -195,6 +195,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Assets\controllerondesk.jpeg" />
+    <Content Include="Content\Assets\kids.jpeg" />
+    <Content Include="Content\Assets\kidsgaming.jpeg" />
     <Content Include="Content\Assets\noImage.jpg" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

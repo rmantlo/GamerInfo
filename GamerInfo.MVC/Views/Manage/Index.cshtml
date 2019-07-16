@@ -2,57 +2,62 @@
 @{
     ViewBag.Title = "Manage";
 }
+<div class="container">
+    <h2>Account Management</h2>
 
-<h2 id="tester">Account Management</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        <br />
-        <dt>Make Family Friendly: </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsFamilyFriendly) (removes non rated and rated M games from view! warning:: this decreases number of game results from searches)
-        </dd>
-        <br />
-        <dt>Change color Theme: </dt>
-        <dd>
-            <div class="switch">
-                @Html.RadioButtonFor(x => x.ThemeType, 0)
-                <span class="slider round"></span>
-            </div>
-            <label>Default</label>
-        </dd>
-        <dd>
-            <div class="switch">
-                @Html.RadioButtonFor(x => x.ThemeType, 1)
-                <span class="slider round"></span>
-            </div>
-            <label>Night Mode</label>
-        </dd>
-        <dd>
-            <div class="switch">
-                @Html.RadioButtonFor(x => x.ThemeType, 2)
-                <span class="slider round"></span>
-            </div>
-            <label>Party Mode</label>
-        </dd>
-    </dl>
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div>
+        <h4>Change your account settings</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Password:</dt>
+            <dd>
+                [
+                @if (Model.HasPassword)
+                {
+                    @Html.ActionLink("Change your password", "ChangePassword")
+                }
+                else
+                {
+                    @Html.ActionLink("Create", "SetPassword")
+                }
+                ]
+            </dd>
+            <br />
+            <dt>Make Family Friendly: </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsFamilyFriendly) <p>(removes non rated and rated M games from view! <span style="color:red">warning::</span> this decreases number of game results from searches)</p>
+            </dd>
+            <br />
+            <dt>Change color Theme: </dt>
+            <dd>
+                <div class="switch">
+                    @Html.RadioButtonFor(x => x.ThemeType, 0)
+                    <span class="slider round"></span>
+                </div>
+                <label>Default</label>
+            </dd>
+            <dd>
+                <div class="switch">
+                    @Html.RadioButtonFor(x => x.ThemeType, 1)
+                    <span class="slider round"></span>
+                </div>
+                <label>Night Mode</label>
+            </dd>
+            <dd>
+                <div class="switch">
+                    @Html.RadioButtonFor(x => x.ThemeType, 2)
+                    <span class="slider round"></span>
+                </div>
+                <label>Party Mode</label>
+            </dd>
+        </dl>
+    </div>
 </div>
+
+
+
+
 
 @section scripts {
     <script language="javascript" type="text/javascript">

@@ -16,7 +16,7 @@ namespace GamerInfo.Services
     public class ApiService
     {
         private string URL = "https://api-v3.igdb.com/";
-        private string Key = "4e0ed404bf691e52cb4cedf37ee1551d";
+        private string Key = "71de76ca8da2d1fd5cfc5e23f7decfde";
         private readonly string _userId;
         private readonly bool _isFamilyFriendly;
         public ApiService(Guid userId)

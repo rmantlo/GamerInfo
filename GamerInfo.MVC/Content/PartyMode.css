@@ -2,7 +2,9 @@
     padding-top: 50px;
     padding-bottom: 20px;
 }
-
+footer {
+    color: black;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -24,8 +26,13 @@ textarea {
 }
 
 /************MY CODE********************/
-/****USER MANAGE****/
-/*checkbox toggle slider*/
+/***********Manage controller views*******/
+
+/**Index**/
+dd, dt, p, h2, h4, label, h1 {
+    color: black !important;
+}
+/*checkbox/radio toggle slider*/
 /* Hide default HTML checkbox */
 .switch input[type='checkbox'] {
     opacity: 0;
@@ -42,8 +49,6 @@ textarea {
     height: 17px;
 }
 
-
-/* The slider */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -114,14 +119,117 @@ input[type='radio']:checked + .slider:before {
     transform: translateX(8px);
 }
 
-/****GAME LIBRARY****/
+/************NAVBAR**************/
+.navbar-inverse {
+    background-color: #523155;
+}
+
+/**********Home Page*************/
+/*Index*/
+.jumbotron {
+    background-color: #eeeeee;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 30px;
+}
+
+.jumboSide1 {
+    width: 30vw;
+    min-width: 350px;
+    height: 330px;
+    float: left;
+    margin-right: 20px;
+    overflow: hidden;
+}
+
+    .jumboSide1 img {
+        height: 100%;
+        margin-left: -20px;
+    }
+
+.jumboSide2 {
+    width: 35vw;
+    min-width: 350px;
+    height: 300px;
+    float: right;
+    overflow: hidden;
+    margin-left: 20px;
+}
+
+    .jumboSide2 img {
+        height: 100%;
+        margin-left: -80px;
+    }
+
+.jumboContent {
+    padding: 20px;
+}
+/**Contact form**/
+.contactForm {
+    margin: 0 auto;
+}
+
+    .contactForm input, textarea {
+        max-width: none;
+    }
+
+    .contactForm input {
+        width: 40vw;
+    }
+
+    .contactForm textarea {
+        height: 200px;
+    }
+
+.formSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.contactForm .btn {
+    background-color: #523155;
+    color: #E3E3E3;
+}
+
+/**************API Library******************/
+
+/**************GAME LIBRARY****************/
+.libraryGames {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.game {
+    width: 300px;
+    height: 460px;
+    padding: 10px;
+    margin: 10px;
+    background: #eeeeee;
+    border-radius: 8px;
+    box-shadow: 1px 1px 10px #3E3E3E;
+}
+
+    .game h3 {
+        bottom: 0;
+        text-align: center;
+        color: black;
+    }
+
+    .game a:hover {
+        text-decoration: none;
+    }
+
 #libraryLoopImages {
     display: inline-block;
-    width: 264px;
+    width: 100%;
     height: auto;
 }
 
-/****DETAILS PAGE****/
+/**DETAILS PAGE**/
 .detailsData {
     border: 1px solid black;
     display: flex;
@@ -139,12 +247,4 @@ input[type='radio']:checked + .slider:before {
 /*DETAILS EDIT*/
 .control-label {
     text-align: left !important;
-}
-
-.jumbotron {
-    background-color: hotpink;
-}
-
-#tester {
-    background-color: hotpink;
 }

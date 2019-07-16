@@ -3,44 +3,47 @@
 @{
     ViewBag.Title = "Index";
 }
+<div class="container" style="margin-bottom: 50px;">
+    <h2 class="text" style="text-align:center">My Game Library</h2>
 
-<h2>My Games</h2>
+    @if (TempData.ContainsKey("SaveResult"))
+    {
+        <div class="alert alert-success fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+            @TempData["SaveResult"]
+        </div>
+    }
 
-@if (TempData.ContainsKey("SaveResult"))
-{
-    <div class="alert alert-success fade in" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-            <span>&times;</span>
-        </button>
-        @TempData["SaveResult"]
-    </div>
-}
-
-<p>
-    <a data-target="#myModal" data-toggle="modal">Create new Game</a>
-</p>
-<div class="modal" id="myModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                @Html.Partial("_Create", new GamerInfo.Models.Game())
+    <p class="text" style="text-align:center">
+        @Html.ActionLink("Browse Games", "Index", "Api") --- <a data-target="#myModal" data-toggle="modal">Create Your Own Game</a>
+    </p>
+    <div class="modal" id="myModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("_Create", new GamerInfo.Models.Game())
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="libraryGames">
+        @foreach (var item in Model)
+        {
+            <section class="game">
+                <a href="@Url.Action("Details", "Library", new { id = item.GameID})">
+                    <image id="libraryLoopImages" src="@Html.DisplayFor(modelItem => item.CoverID)" />
+                    <h3>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </h3>
+                </a>
+            </section>
+        }
+    </div>
 </div>
 
-<div class="container">
-    @foreach (var item in Model)
-    {
-        <section class="col-md-4" id="designPls">
-            <a href="@Url.Action("Details", "Library", new { id = item.GameID})"><image id="libraryLoopImages" src="@Html.DisplayFor(modelItem => item.CoverID)" /></a>
-            <h3>
-                @Html.DisplayFor(modelItem => item.Name)
-            </h3>
-        </section>
-    }
-
-</div>
