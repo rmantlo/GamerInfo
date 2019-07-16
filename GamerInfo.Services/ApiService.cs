@@ -209,8 +209,6 @@ namespace GamerInfo.Services
                         {
                             displayList.Add(model);
                         }
-
-
                     }
                     else
                     {
