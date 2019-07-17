@@ -1,7 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background: #ffb029;
+    background: #FF9933;
 }
 
 footer {
@@ -252,18 +252,18 @@ input[type='radio']:checked + .slider:before {
     box-shadow: 1px 1px 10px #3E3E3E;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
 }
 
 @media (max-width: 700px) {
     .detailsData {
         flex-wrap: wrap;
+        justify-content: space-around;
     }
 }
 
 #detailsImage {
     width: 264px;
-    height: fit-content;
+    align-self: flex-start;
 }
 
 .detailsInfo {

@@ -16,7 +16,7 @@ namespace GamerInfo.MVC.Controllers
         {
             var gservice = CreateGameService();
             var gameList = gservice.GetGameList();
-            return View(gameList);
+            return View(gameList.OrderBy(e=>e.Name));
         }
         public ActionResult Details(int id)
         {
