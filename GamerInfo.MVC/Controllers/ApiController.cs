@@ -28,22 +28,34 @@ namespace GamerInfo.MVC.Controllers
         public ActionResult Search(string search)
         {
             var aservice = CreateApiService();
-
             List<ApiDisplay> searchGames = aservice.SearchResults(search);
-            return View(searchGames);
+            if (searchGames != null)
+            {
+                ViewBag.Value = true;
+                return View(searchGames);
+            }
+            else { ViewBag.Value = false; return View(); }
         }
         //AddToLibrary
         public ActionResult AddToLibrary(ApiDisplay item)
         {
             var aService = CreateApiService();
-            if (aService.AddGameToLibrary(item))
+            if (aService.CheckMyLibrary(item))
             {
-                TempData["SaveResult"] = "Game successfully added to library!";
-                return RedirectToAction("Index");
+                if (aService.AddGameToLibrary(item))
+                {
+                    TempData["SaveResult"] = "Game successfully added to library!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["FailResult"] = "Game NOT added to library";
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
-                TempData["FailResult"] = "Game NOT added to library";
+                TempData["FailResult"] = "Game already in library";
                 return RedirectToAction("Index");
             }
         }

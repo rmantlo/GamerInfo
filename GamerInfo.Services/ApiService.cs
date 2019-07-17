@@ -32,94 +32,104 @@ namespace GamerInfo.Services
         //calls api and saves basic data in model
         public List<ApiDisplay> SearchResults(string searchTerm)
         {
-            string str = $"fields name,cover,summary,genres,first_release_date,age_ratings; search \"{searchTerm}\"; limit 20;";
-
+            string searchStr = $"fields game; search \"{searchTerm}\"; where game != null & popularity > 50;";
+            List<int> resultIdList = new List<int>();
             using (var client = new WebClient())
             {
                 client.BaseAddress = URL;
                 client.Headers.Add("user-key", Key);
-                string gameResult = client.UploadString(URL + "search/", str);
-                List<ApiFirstCall> obj = JsonConvert.DeserializeObject<List<ApiFirstCall>>(gameResult);
-                List<ApiDisplay> displaySearchList = new List<ApiDisplay>();
+                string gameResult = client.UploadString(URL + "search/", searchStr);
+                List<ApiSearch> obj = JsonConvert.DeserializeObject<List<ApiSearch>>(gameResult);
 
-                foreach (var item in obj)
+                foreach (ApiSearch item in obj)
                 {
-                    //covers
-                    if (item.Cover != null)
-                    {
-                        int coverId = int.Parse(item.Cover);
-                        string response = GetCoverInfo(coverId);
-                        item.Cover = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{response}.jpg";
-                    }
-                    else
-                    {
-                        item.Cover = "~Content/Assets/noImage.jpg";
-                    }
-                    //genres
-                    List<string> listOfGenres = new List<string>();
-                    foreach (var genre in item.Genres)
-                    {
-                        int genres = int.Parse(genre);
-                        string gResponse = GetGenreInfo(genres);
-                        listOfGenres.Add(gResponse);
-                    }
-                    item.Genres = null;
-                    item.Genres = listOfGenres.ToArray();
-                    //releasedates
-                    if (item.First_release_date != null)
-                    {
-                        int release = int.Parse(item.First_release_date);
-                        var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(release).ToShortDateString();
-
-                        item.First_release_date = date.ToString();
-                    }
-                    else item.First_release_date = null;
-                    //ageratings
-                    if (item.Age_ratings != null)
-                    {
-                        int ageRatingId = int.Parse(item.Age_ratings[0]);
-                        string aResponse = GetAgeRatingInfo(ageRatingId);
-                        List<string> ratingList = new List<string>();
-                        ratingList.Add(aResponse);
-                        item.Age_ratings = ratingList.ToArray();
-                    }
-                    else
-                    {
-                        List<string> rate = new List<string> { "No Rating" };
-                        item.Age_ratings = rate.ToArray();
-                    }
-
-                    string genreStr = "";
-                    foreach (var genre in item.Genres)
-                    {
-                        genreStr = genreStr + " " + genre;
-                    }
-                    ApiDisplay model = new ApiDisplay
-                    {
-                        GameID = int.Parse(item.Id),
-                        Name = item.Name,
-                        Summary = item.Summary,
-                        CoverID = item.Cover,
-                        Genre = genreStr,
-                        AgeRating = item.Age_ratings[0],
-                        ReleaseDate = DateTime.Parse(item.First_release_date)
-                    };
-                    if (_isFamilyFriendly)
-                    {
-                        if (model.AgeRating != "AO" && model.AgeRating != "M" && model.AgeRating != "Rating Pending" && model.AgeRating != "18+" && model.AgeRating != "No Rating")
-                        {
-                            displaySearchList.Add(model);
-                        }
-                    }
-                    else
-                    {
-                        displaySearchList.Add(model);
-                    }
+                    resultIdList.Add(item.Game);
                 }
             }
+            if (resultIdList.Count != 0)
+            {
+                string gameIdList = string.Join(",", resultIdList.ToArray());
+                var epoch = Convert.ToInt32((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds);
+                string pullSearchGames = $"fields name,popularity,cover,summary,genres,first_release_date,age_ratings; where first_release_date < {epoch} & id = ({gameIdList}); sort popularity desc; limit 10;";
+                using (var client = new WebClient())
+                {
+                    client.BaseAddress = URL;
+                    client.Headers.Add("user-key", Key);
+                    string gameResult = client.UploadString(URL + "games/", pullSearchGames);
+                    List<ApiFirstCall> obj = JsonConvert.DeserializeObject<List<ApiFirstCall>>(gameResult);
+                    List<ApiDisplay> displaySearchList = new List<ApiDisplay>();
 
-            return null;
+                    foreach (var item in obj)
+                    {
+                        ApiDisplay searchResult = new ApiDisplay
+                        {
+                            GameID = int.Parse(item.Id),
+                            Name = item.Name,
+                            Summary = item.Summary,
+                        };
+                        //covers
+                        if (item.Cover != null)
+                        {
+                            string response = GetCoverInfo(item.Cover);
+                            searchResult.CoverID = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{response}.jpg";
+                        }
+                        else
+                        {
+                            searchResult.CoverID = "~Content/Assets/noImage.jpg";
+                        }
+                        //genres
+                        List<string> listOfGenres = new List<string>();
+                        if (item.Genres != null)
+                        {
+                            foreach (var genre in item.Genres)
+                            {
+                                listOfGenres.Add(genre);
+                            }
+                            string genreList = string.Join(",", listOfGenres.ToArray());
+                            searchResult.Genre = GetGenreInfo(genreList);
+                        }
+                        else searchResult.Genre = "None";
+                        //releasedates
+                        if (item.First_release_date != null)
+                        {
+                            //int release = int.Parse(item.First_release_date);
+                            var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(int.Parse(item.First_release_date));
+
+                            searchResult.ReleaseDate = date;
+                        }
+                        else searchResult.ReleaseDate = null;
+                        //ageratings
+                        if (item.Age_ratings != null)
+                        {
+                            //int ageRatingId = int.Parse(item.Age_ratings[0]);
+                            string aResponse = GetAgeRatingInfo(item.Age_ratings[0]);
+                            //List<string> ratingList = new List<string>();
+                            //ratingList.Add(aResponse);
+                            //item.Age_ratings = ratingList.ToArray();
+                            searchResult.AgeRating = aResponse;
+                        }
+                        else
+                        {
+                            searchResult.AgeRating = "No Rating";
+                        }
+                        if (_isFamilyFriendly)
+                        {
+                            if (searchResult.AgeRating != "AO" && searchResult.AgeRating != "M" && searchResult.AgeRating != "Rating Pending" && searchResult.AgeRating != "18+" && searchResult.AgeRating != "No Rating")
+                            {
+                                displaySearchList.Add(searchResult);
+                            }
+                        }
+                        else
+                        {
+                            displaySearchList.Add(searchResult);
+                        }
+                    }
+                    return displaySearchList;
+                }
+            }
+            else return null;
         }
+
         public List<ApiDisplay> GetBrowseGames()
         {
             List<ApiFirstCall> gameObject;
@@ -133,7 +143,7 @@ namespace GamerInfo.Services
                 var epochTry = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
                 int epoch = Convert.ToInt32(epochTry);
 
-                string str = $"fields name,popularity,cover,summary,genres,first_release_date,age_ratings; where first_release_date < {epoch}; sort popularity desc; limit 20;";
+                string str = $"fields name,popularity,cover,summary,genres,first_release_date,age_ratings; where first_release_date < {epoch}; sort popularity desc; limit 10;";
 
                 string gameResult = client.UploadString(URL + "games/", str);
                 List<ApiFirstCall> obj = JsonConvert.DeserializeObject<List<ApiFirstCall>>(gameResult);
@@ -143,66 +153,55 @@ namespace GamerInfo.Services
 
                 foreach (var item in obj)
                 {
-                    //covers
-                    if (item.Cover != null)
-                    {
-                        int coverId = int.Parse(item.Cover);
-                        string response = GetCoverInfo(coverId);
-                        item.Cover = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{response}.jpg";
-                    }
-                    else
-                    {
-                        item.Cover = "~Content/Assets/noImage.jpg";
-                    }
-                    //genres
-                    List<string> listOfGenres = new List<string>();
-                    foreach (var genre in item.Genres)
-                    {
-                        int genres = int.Parse(genre);
-                        string gResponse = GetGenreInfo(genres);
-                        listOfGenres.Add(gResponse);
-                    }
-                    item.Genres = null;
-                    item.Genres = listOfGenres.ToArray();
-                    //releasedates
-                    if (item.First_release_date != null)
-                    {
-                        int release = int.Parse(item.First_release_date);
-                        var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(release).ToShortDateString();
-
-                        item.First_release_date = date.ToString();
-                    }
-                    else item.First_release_date = null;
-                    //ageratings
-                    if (item.Age_ratings != null)
-                    {
-                        int ageRatingId = int.Parse(item.Age_ratings[0]);
-                        string aResponse = GetAgeRatingInfo(ageRatingId);
-                        List<string> ratingList = new List<string>();
-                        ratingList.Add(aResponse);
-                        item.Age_ratings = ratingList.ToArray();
-                    }
-                    else
-                    {
-                        List<string> rate = new List<string> { "No Rating" };
-                        item.Age_ratings = rate.ToArray();
-                    }
-
-                    string genreStr = "";
-                    foreach (var genre in item.Genres)
-                    {
-                        genreStr = genreStr + " " + genre;
-                    }
                     ApiDisplay model = new ApiDisplay
                     {
                         GameID = int.Parse(item.Id),
                         Name = item.Name,
-                        Summary = item.Summary,
-                        CoverID = item.Cover,
-                        Genre = genreStr,
-                        AgeRating = item.Age_ratings[0],
-                        ReleaseDate = DateTime.Parse(item.First_release_date)
+                        Summary = item.Summary
                     };
+
+                    //covers
+                    if (item.Cover != null)
+                    {
+                        string response = GetCoverInfo(item.Cover);
+                        model.CoverID = $"https://images.igdb.com/igdb/image/upload/t_cover_big/{response}.jpg";
+
+                    }
+                    else
+                    {
+                        model.CoverID = "~Content/Assets/noImage.jpg";
+                    }
+                    //genres
+                    List<string> listOfGenres = new List<string>();
+                    if (item.Genres != null)
+                    {
+                        foreach (var genre in item.Genres)
+                        {
+                            listOfGenres.Add(genre);
+                        }
+                        string genreList = string.Join(",", listOfGenres.ToArray());
+                        model.Genre = GetGenreInfo(genreList);
+                    }
+                    else model.Genre = "None";
+                    //releasedates
+                    if (item.First_release_date != null)
+                    {
+                        //int release = int.Parse(item.First_release_date);
+                        var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(int.Parse(item.First_release_date));
+
+                        model.ReleaseDate = date;
+                    }
+                    else model.ReleaseDate = null;
+                    //ageratings
+                    if (item.Age_ratings != null)
+                    {
+                        string aResponse = GetAgeRatingInfo(item.Age_ratings[0]);
+                        model.AgeRating = aResponse;
+                    }
+                    else
+                    {
+                        model.AgeRating = "No Rating";
+                    }
                     if (_isFamilyFriendly)
                     {
                         if (model.AgeRating != "AO" && model.AgeRating != "M" && model.AgeRating != "Rating Pending" && model.AgeRating != "18+" && model.AgeRating != "No Rating")
@@ -220,7 +219,7 @@ namespace GamerInfo.Services
         }
 
         //get cover info
-        public string GetCoverInfo(int coverId)
+        public string GetCoverInfo(string coverId)
         {
             using (var client = new WebClient())
             {
@@ -234,44 +233,33 @@ namespace GamerInfo.Services
             }
         }
         //get Genres info
-        public string GetGenreInfo(int genreId)
+        public string GetGenreInfo(string genreId)
         {
             using (var client = new WebClient())
             {
                 client.BaseAddress = URL;
                 client.Headers.Clear();
                 client.Headers.Add("user-key", Key);
-                string genreData = $"fields id,name; where id = {genreId};";
-                string genreResult = client.UploadString(URL + "genres/", genreData);
+                string genreResult = client.UploadString(URL + "genres/", $"fields id,name; where id = ({genreId});");
                 List<ApiGenre> result = JsonConvert.DeserializeObject<List<ApiGenre>>(genreResult);
-
-                return result[0].Name;
-            }
-        }
-        //get release date info
-        public string GetReleaseDateInfo(int releaseId)
-        {
-            using (var client = new WebClient())
-            {
-                client.BaseAddress = URL;
-                client.Headers.Clear();
-                client.Headers.Add("user-key", Key);
-                string releaseData = $"fields id,human; where id = {releaseId};";
-                string releaseResult = client.UploadString(URL + "release_dates/", releaseData);
-                List<ApiReleaseDates> listOfDates = JsonConvert.DeserializeObject<List<ApiReleaseDates>>(releaseResult);
-                return listOfDates[0].Human;
+                List<string> genres = new List<string>();
+                foreach (var item in result)
+                {
+                    genres.Add(item.Name);
+                }
+                return string.Join(", ", genres.ToArray());
             }
         }
         //get age rating information
-        public string GetAgeRatingInfo(int ratingId)
+        public string GetAgeRatingInfo(string ratingId)
         {
             using (var client = new WebClient())
             {
                 client.BaseAddress = URL;
                 client.Headers.Clear();
                 client.Headers.Add("user-key", Key);
-                string ratingData = $"fields id,rating; where id = {ratingId};";
-                string result = client.UploadString(URL + "age_ratings/", ratingData);
+                //string ratingData = $"fields id,rating; where id = {ratingId};";
+                string result = client.UploadString(URL + "age_ratings/", $"fields id,rating; where id = {ratingId};");
                 List<ApiAgeRating> response = JsonConvert.DeserializeObject<List<ApiAgeRating>>(result);
                 if (response[0].Rating == "1")
                 {
@@ -344,6 +332,20 @@ namespace GamerInfo.Services
             {
                 ctx.Games.Add(entity);
                 return ctx.SaveChanges() == 1;
+            }
+        }
+        //compare game to my library
+        public bool CheckMyLibrary(ApiDisplay game)
+        {
+            using(var ctx = new ApplicationDbContext())
+            {
+                var userId = Guid.Parse(_userId);
+                var result = ctx.Games.SingleOrDefault(e => e.OwnerID == userId && e.GameID == game.GameID);
+                if (result != null)
+                {
+                    return false;
+                }
+                else return true;
             }
         }
     }

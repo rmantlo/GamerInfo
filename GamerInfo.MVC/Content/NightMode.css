@@ -3,6 +3,7 @@
     padding-bottom: 20px;
     background: #3B3B3B;
 }
+
 footer {
     color: #E3E3E3;
 }
@@ -30,7 +31,7 @@ textarea {
 /***********Manage controller views*******/
 
 /**Index**/
-dd, dt, th, td, p, h2, h4, label, h1,h3{
+dd, dt, th, td, p, h2, h4, label, h1, h3 {
     color: #E3E3E3 !important;
 }
 /*checkbox/radio toggle slider*/
@@ -153,25 +154,23 @@ input[type='radio']:checked + .slider:before {
     }
 
 .jumboSide2 {
-    width: 35vw;
-    min-width: 350px;
     height: 300px;
     float: right;
-    overflow: hidden;
-    margin-left: 20px;
 }
 
     .jumboSide2 img {
         height: 100%;
-        margin-left: -80px;
+        margin-left: 0px;
     }
 
 .jumboContent {
     padding: 20px;
 }
+
 /**Contact form**/
 .contactForm {
     margin: 0 auto;
+    max-width: 600px;
 }
 
     .contactForm input, textarea {
@@ -179,7 +178,7 @@ input[type='radio']:checked + .slider:before {
     }
 
     .contactForm input {
-        width: 35vw;
+        width: 100%;
     }
 
     .contactForm textarea {
@@ -205,13 +204,16 @@ input[type='radio']:checked + .slider:before {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
 }
+
 .text {
     color: #E3E3E3;
 }
+
 .game {
     width: 300px;
+    min-height: 400px;
     padding: 10px;
     margin: 10px;
     background: #2C2B2C;
@@ -219,8 +221,14 @@ input[type='radio']:checked + .slider:before {
     box-shadow: 1px 1px 10px #3E3E3E;
 }
 
+    .game a {
+        display:flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
     .game h3 {
-        bottom: 0;
         text-align: center;
         color: #E3E3E3;
     }

@@ -2,21 +2,19 @@
 
 <a data-target="#mySaveDeleteModal" data-toggle="modal">Remove Save</a>
 
-<div class="modal" id="mySaveDeleteModal" tabindex="-1">
-    <div class="modal-dialog">
+<div class="modal fade" id="mySaveDeleteModal" tabindex="-1">
+    <div class="modal-dialog" style="margin-top:150px;">
         <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-            </div>
             <div class="modal-body">
-                <h3>Are you sure you want to delete save file: @Html.DisplayFor(e => e.SaveTitle)?</h3>
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 style="text-align:center; margin: 10px 0 20px 0;">Are you sure you want to delete save file: @Html.DisplayFor(e => e.SaveTitle)?</h3>
                 @using (Html.BeginForm("Delete", "Save", new { id = Model.SaveID }, FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
 
-                    <div class="form-actions no-color">
-                        <input type="submit" value="Delete" class="btn btn-default" /> |
-                        @Html.ActionLink("Cancel", "Index")
+                    <div class="form-actions no-color" style="text-align:center">
+                        <input type="submit" value="Delete" class="btn btn-default" style="background-color: red; border-color: red; color:white;" /> |
+                        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>
                 }
             </div>

@@ -9,13 +9,21 @@
     <div class="jumboContent">
         <h1>Gamers Save</h1>
         <p class="lead">Gamers Save is a site for you to maintain information on the games you play and the save files you have for them. Keep up to date on which save file you are currently playing and where you left off with your own personal notes!</p>
-        <p><a href="@Url.Action("Register", "Account")" class="btn btn-primary btn-lg" style="background: #8C418D; border-color: #A54EA6">Get Started &raquo;</a></p>
-    </div>
+        <p>
+            @{if (!User.Identity.IsAuthenticated)
+                {<a href="@Url.Action("Register", "Account")" class="btn btn-primary btn-lg" style="background: #8C418D; border-color: #A54EA6">Get Started &raquo;</a>}
+                else
+                {
+                    <a href="@Url.Action("Index", "Library")" class="btn btn-primary btn-lg" style="background: #8C418D; border-color: #A54EA6">My Library &raquo;</a>
+                }
+        }
+    </p>
+</div>
 </div>
 
 <div class="jumbotron row">
     <div class="jumboSide2">
-        <img src="~/Content/Assets/kids.jpeg" />
+        <img src="~/Content/Assets/kidsedit.jpeg" />
     </div>
     <div class="jumboContent">
         <h1>Personalize!</h1>
@@ -30,7 +38,7 @@
     <div class="jumboContent">
         <h1>Positives of Gaming</h1>
         <p class="lead">Gamers Save is a site for you to maintain information on the games you play and the save files you have for them. Keep up to date on which save file you are currently playing and where you left off with your own personal notes!</p>
-        <p><a href="#" class="btn btn-primary btn-lg" style="background: #8C418D; border-color: #A54EA6">See Sources! &raquo;</a></p>
+        <p><a href="https://www.apa.org/news/press/releases/2013/11/video-games" target="_blank" class="btn btn-primary btn-lg" style="background: #8C418D; border-color: #A54EA6">See Sources! &raquo;</a></p>
     </div>
 </div>
 <style>

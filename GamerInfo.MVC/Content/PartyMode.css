@@ -1,7 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background: #bf55a8;
+    background: #ffb029;
 }
 
 footer {
@@ -32,7 +32,7 @@ textarea {
 
 /**Index**/
 dd, dt, th, td, p, h2, h4, label, h1, h3 {
-    color: #cab358 !important;
+    color: black !important;
 }
 /*checkbox/radio toggle slider*/
 /* Hide default HTML checkbox */
@@ -123,16 +123,17 @@ input[type='radio']:checked + .slider:before {
 
 /************NAVBAR**************/
 .navbar-inverse {
-    background-color: #0672b0;
+    background-color: #523155;
 }
+
 /****modals*****/
 .modal-content {
-    background-color: darkgreen;
+    background: #ff338f;
 }
 /**********Home Page*************/
 /*Index*/
 .jumbotron {
-    background-color: #38cb8d;
+    background-color: #00ff40;
     padding-top: 0;
     padding-bottom: 0;
     margin-top: 30px;
@@ -153,25 +154,23 @@ input[type='radio']:checked + .slider:before {
     }
 
 .jumboSide2 {
-    width: 35vw;
-    min-width: 350px;
     height: 300px;
     float: right;
-    overflow: hidden;
-    margin-left: 20px;
 }
 
     .jumboSide2 img {
         height: 100%;
-        margin-left: -80px;
+        margin-left: 0px;
     }
 
 .jumboContent {
     padding: 20px;
 }
+
 /**Contact form**/
 .contactForm {
     margin: 0 auto;
+    max-width: 600px;
 }
 
     .contactForm input, textarea {
@@ -179,7 +178,7 @@ input[type='radio']:checked + .slider:before {
     }
 
     .contactForm input {
-        width: 35vw;
+        width: 100%;
     }
 
     .contactForm textarea {
@@ -205,7 +204,7 @@ input[type='radio']:checked + .slider:before {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
 }
 
 .text {
@@ -214,18 +213,24 @@ input[type='radio']:checked + .slider:before {
 
 .game {
     width: 300px;
-    height: 460px;
+    min-height: 400px;
     padding: 10px;
     margin: 10px;
-    background: #c1152d;
+    background: #006Aff;
     border-radius: 8px;
-    box-shadow: 1px 1px 10px #ddfc77;
+    box-shadow: 1px 1px 10px #3E3E3E;
 }
 
+    .game a {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
     .game h3 {
-        bottom: 0;
         text-align: center;
-        color: #a1db9d;
+        color: #E3E3E3;
     }
 
     .game a:hover {
@@ -242,7 +247,7 @@ input[type='radio']:checked + .slider:before {
 .detailsData {
     padding: 20px;
     margin-bottom: 10px;
-    background: #eeeeee;
+    background: #00f239;
     border-radius: 8px;
     box-shadow: 1px 1px 10px #3E3E3E;
     display: flex;
@@ -267,7 +272,7 @@ input[type='radio']:checked + .slider:before {
 
 .saveData {
     padding: 20px;
-    background: #eeeeee;
+    background: #ca00f2;
     border-radius: 8px;
     box-shadow: 1px 1px 10px #3E3E3E;
     margin-bottom: 10px;
