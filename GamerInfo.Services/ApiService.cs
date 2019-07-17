@@ -32,7 +32,7 @@ namespace GamerInfo.Services
         //calls api and saves basic data in model
         public List<ApiDisplay> SearchResults(string searchTerm)
         {
-            string str = $"fields name,cover,summary,genres,first_release_date,age_ratings; search '{searchTerm}'; limit 20;";
+            string str = $"fields name,cover,summary,genres,first_release_date,age_ratings; search \"{searchTerm}\"; limit 20;";
 
             using (var client = new WebClient())
             {
@@ -133,7 +133,7 @@ namespace GamerInfo.Services
                 var epochTry = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
                 int epoch = Convert.ToInt32(epochTry);
 
-                string str = $"fields name,popularity,cover,summary,genres,first_release_date,age_ratings; where first_release_date < {epoch}; sort popularity desc;";
+                string str = $"fields name,popularity,cover,summary,genres,first_release_date,age_ratings; where first_release_date < {epoch}; sort popularity desc; limit 20;";
 
                 string gameResult = client.UploadString(URL + "games/", str);
                 List<ApiFirstCall> obj = JsonConvert.DeserializeObject<List<ApiFirstCall>>(gameResult);

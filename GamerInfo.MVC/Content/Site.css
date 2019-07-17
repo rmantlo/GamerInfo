@@ -153,6 +153,7 @@ input[type='radio']:checked + .slider:before {
 .jumboSide2 {
     width: 35vw;
     min-width: 350px;
+    max-width:500px;
     height: 300px;
     float: right;
     overflow: hidden;
@@ -161,7 +162,7 @@ input[type='radio']:checked + .slider:before {
 
     .jumboSide2 img {
         height: 100%;
-        margin-left: -80px;
+        margin-left: -20px;
     }
 
 .jumboContent {

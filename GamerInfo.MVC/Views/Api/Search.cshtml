@@ -16,16 +16,11 @@
     <div>
         <label>Search Games: </label>
         <input class="form-control" style="display: inline" id="searchValue" placeholder="enter title" />
-        <button type="submit"
-                class="btn btn-default"
-                id="searchLink"
-                style="background: #8C418D; border-color: #A54EA6; color: #E3E3E3">
-            Search
-        </button>
+        <button type="submit" class="btn btn-default" id="searchFunction" style="background: #8C418D; border-color: #A54EA6; color: #E3E3E3">Search</button>
     </div>
     <br />
     <br />
-    <h2>Popular and New Games!</h2>
+    <h2>Results: </h2>
     <div class="libraryGames">
         @foreach (var item in Model)
         {
@@ -45,7 +40,7 @@
 @section scripts {
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
-            $("button#searchLink")
+            $("button#searchFunction")
                 .click(function (e) {
                     var target = $(e.target);
                     var search = $("input#searchValue").val();
